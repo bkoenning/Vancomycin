@@ -10,17 +10,16 @@
 #import "Molecule.h"
 #import "Volume.h"
 
-@interface Concentration : NSObject
+@interface Concentration : NSObject <NSCopying>
 
 @property (nonatomic) Molecule *mol;
 @property (nonatomic) Volume *vol;
 
 -(instancetype)initWithMolecularAmount: (Molecule*)m andVolume: (Volume*)vol;
 
--(void)reduce;
--(void)changeVolumeToUnits: (VolumeUnit)un;
--(Molecule*)getAmountPerVolume: (Volume*)v;
--(Volume*)getVolumePerMolecule: (Molecule*)m;
+-(Concentration*)reduced;
+-(Molecule*)withVolume: (Volume*)v;
+-(instancetype)copyWithZone:(NSZone *)zone;
 
 
 

@@ -24,7 +24,7 @@ typedef enum
 }MolarUnit;
 
 
-@interface Molecule : NSObject <NumberValue>
+@interface Molecule : NSObject <NumberValue, NSCopying>
 
 @property (nonatomic) NSNumber* molarAmount;
 @property (nonatomic) NSNumber* massAmount;
@@ -38,8 +38,9 @@ typedef enum
 -(instancetype)initWithMassFloat:  (float)amt massUnit:(MassUnit)un molecularWeight:(float)mw;
 -(float)getValueInMass:(MassUnit)mu;
 -(float)getValueInMolar:(MolarUnit)mu;
--(void)convertToMassUnit:(MassUnit)mu;
--(void)convertToMolarUnit:(MolarUnit)mu;
+-(Molecule*)convertedToMassUnit: (MassUnit)mu;
+-(Molecule*)convertedToMolarUnit: (MolarUnit)mu;
+-(instancetype)copyWithZone:(NSZone *)zone;
 
 
 @end

@@ -82,7 +82,7 @@
 
 -(void)validateAndLockInformation:(id)sender
 {
-    NSRegularExpression *creatinineReg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{1,3}(\\.\\d{1,5}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSRegularExpression *creatinineReg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{1,5}(\\.\\d{1,5}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
     // NSRegularExpression *integerReg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{1,3}$" options:NSRegularExpressionCaseInsensitive error:nil];
     //NSTextCheckingResult *weightMatch = [decimalReg firstMatchInString:[self.textFieldWeight text] options:0 range:NSMakeRange(0, [[self.textFieldWeight text]length])];
     NSTextCheckingResult *serumCreatinineMatch = [creatinineReg firstMatchInString:[self.serumCrText text] options:0 range:NSMakeRange(0, [[self.serumCrText text]length])];
@@ -216,8 +216,7 @@
         
         [[self detailItem]setIsSet:YES];
         if ([[self segUCr]selectedSegmentIndex] == 1)
-           // [[self detailItem]setUrineCr:[[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self urineCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:L]]];
-            [[self detailItem]setUrineCr:<#(UrineCreatinine *)#>]
+            [[self detailItem]setUrineCr:[[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self urineCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:L]]];
         else
             [[self detailItem]setUrineCr:[[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMassFloat:[[[self urineCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:DL]]];
         if ([[self segUrineVolume]selectedSegmentIndex] == 1)
@@ -225,16 +224,9 @@
         else
             [[self detailItem]setUrineVolume:[[Volume alloc]initWithFloat:[[[self urineVolumeText]text]floatValue] andUnits:ML]];
         if ([[self segScr]selectedSegmentIndex] == 1)
-            //[[[self detailItem]serumCr]setUnits:MICRO_MOL_PER_LITER];
-            //[[[[self detailItem]serumCr]mol]setMolarunit:MICROMOL];
-           // [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithCreatinineAmount:[[Creatinine alloc]initWithMolarFloat:[[[self serumCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:L]]];
-            [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithMolecularAmount:[[Creatininecon]] andVolume:<#(Volume *)#>]]
+            [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self serumCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:L]]];
         else
-            [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithCreatinineAmount:[[Creatinine alloc]initWithMassFloat:[[[self serumCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:DL]]];
-            //[[[self detailItem]serumCr]setUnits:MG_PER_DECILITER];
-        //[[[self detailItem]serumCr]setValue:[NSNumber numberWithFloat:[[[self serumCrText]text]floatValue]]];
-        //[[[self detailItem]urineCr]setValue:[NSNumber numberWithFloat:[[[self urineCrText]text]floatValue]]];
-        //[[[self detailItem]urineVolume]setVolume:[NSNumber numberWithFloat:[[[self urineVolumeText]text]floatValue]]];
+            [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMassFloat:[[[self serumCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:DL]]];
         [[self detailItem]postDidChangeNotification];
         [[self lockButton]setTitle:@"Unlock Information" forState:UIControlStateNormal];
         for (UIControl *con in enabledViews){

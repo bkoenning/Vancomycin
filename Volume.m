@@ -27,8 +27,27 @@
     else return @"L";
 }
 
+-(Volume*)converted:(VolumeUnit)vu
+{
+    Volume *result = [[Volume alloc]init];
+    if ([self unit] > vu){
+        int factor = (int)[self unit] / (int) vu;
+        [result setVolume:[NSNumber numberWithFloat:[[self volume]floatValue]/factor]];
+        [result setUnit:vu];
+    }
+    else if ([self unit] < vu){
+        int factor = (int)vu / (int)[self unit];
+        [result setVolume:[NSNumber numberWithFloat:[[self volume]floatValue] * factor]];
+        [result setUnit:vu];
+    }
+    else
+        result = [self copy];
+    
+    return  result;
+}
 
--(void)convertTo:(VolumeUnit)vu
+
+/*-(void)convertTo:(VolumeUnit)vu
 {
     if ([self unit] > vu){
         int factor = (int)[self unit] / (int) vu;
@@ -41,6 +60,7 @@
         [self setUnit:vu];
     }
 }
+ 
 
 -(Volume*)getVolumeAs:(VolumeUnit)vu
 {
@@ -56,11 +76,18 @@
     else
         return  [[Volume alloc] initWithFloat:[[self volume]floatValue] andUnits:vu];
 }
+ */
 -(NSString*) valueAsString
 {
     NSNumberFormatter *format = [[NSNumberFormatter alloc] init];
     [format setMaximumFractionDigits:2];
     return [NSString stringWithFormat:@"%@", [ format stringFromNumber:[self volume]]];
+}
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    Volume *volcopy = [[Volume allocWithZone:zone]initWithFloat:[[self volume]floatValue] andUnits:[self unit]];
+    return  volcopy;
 }
 /*
  -(NSNumber*) getValueAs:(VolumeUnit)vu

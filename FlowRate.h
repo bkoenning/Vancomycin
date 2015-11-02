@@ -9,8 +9,18 @@
 #import <Foundation/Foundation.h>
 
 #import "Volume.h"
-//#import "Time.h"
+#import "Time.h"
 
-@interface FlowRate : NSObject
+@interface FlowRate : NSObject <NSCopying>
+
+@property Volume *volume;
+@property Time *time;
+
+-(instancetype)initWithVolume: (Volume*)vol andTime:(Time*)t;
+-(instancetype)copyWithZone:(NSZone *)zone;
+-(FlowRate*)reduced;
+-(Volume*)withTime: (Time*)t;
+-(Time*)withVolume: (Volume*)v;
+-(FlowRate*)perTimeUnit: (TimeUnit)u;
 
 @end

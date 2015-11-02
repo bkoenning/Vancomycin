@@ -33,7 +33,7 @@
 -(instancetype)initWithWeight:(Weight *)w height:(Height *)h gender:(Gender *)g amputations:(Amputations *)amp age:(Age *)a
 {
     self = [ super initWithTitle:@"Basic Information"];
-    [self setWeight:[w cop]]
+    [self setWeight:[w copy]];
     [self setWeight:w];
     [self setHeight:h];
     [self setGender:g];

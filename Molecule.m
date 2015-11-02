@@ -11,6 +11,77 @@
 
 @synthesize molarAmount, massAmount, massunit, molarunit, molecularWeight, returnAsMolar;
 
+-(Molecule*)convertedToMolarUnit:(MolarUnit)mu
+{
+    Molecule *result = [[Molecule alloc]init];
+    if ([self molarunit] > mu){
+        int factor = (int)[self molarunit] / (int) mu;
+        [result setMolarAmount:[NSNumber numberWithFloat:[[self molarAmount]floatValue] /factor]];
+        [result setMolarunit:mu];
+        [result setMassAmount:[NSNumber numberWithFloat:([[self molarAmount]floatValue]  / factor) * [self molecularWeight]]];
+        [result setMassunit:(MassUnit)mu];
+        [result setReturnAsMolar:YES];
+        [result setMolecularWeight:[self molecularWeight]];
+    }
+    else if ([self molarunit] < mu){
+        int factor = (int) mu / (int)[self molarunit];
+        [result setMolarAmount:[NSNumber numberWithFloat:[[self molarAmount]floatValue]  * factor]];
+        [result setMolarunit:mu];
+        [result setMassAmount:[NSNumber numberWithFloat:([[self molarAmount]floatValue]  * factor) * [self molecularWeight]]];
+        [result setMassunit:(MassUnit)mu];
+        [result setReturnAsMolar:YES];
+        [result setMolecularWeight:[self molecularWeight]];
+    }
+    else
+        result = [self copy];
+    
+    return  result;
+}
+
+
+-(Molecule*)convertedToMassUnit:(MassUnit)mu
+{
+    Molecule *result = [[Molecule alloc]init];
+    
+    if ([self massunit] > mu){
+        int factor = (int)[self massunit] / (int)mu;
+        [result setMassAmount:[NSNumber numberWithFloat:[[self massAmount]floatValue] / factor]];
+        [result setMassunit:mu];
+        [result setMolarAmount:[NSNumber numberWithFloat:([[self massAmount]floatValue] / factor) / [self molecularWeight]]];
+        [result setMolarunit:(MolarUnit)mu];
+        [result setReturnAsMolar:NO];
+        [result setMolecularWeight:[self molecularWeight]];
+    }
+    else if ([self massunit] < mu){
+        int factor = (int)mu / (int)[self massunit];
+        [result setMassAmount:[NSNumber numberWithFloat:[[self massAmount]floatValue] * factor]];
+        [result setMassunit:mu];
+        [result setMolarAmount:[NSNumber numberWithFloat:([[self massAmount]floatValue] * factor) / [self molecularWeight]]];
+        [result setMolarunit:(MolarUnit)mu];
+        [result setReturnAsMolar:NO];
+        [result setMolecularWeight:[self molecularWeight]];
+    }
+    else
+        result = [self copy];
+    
+    return  result;
+}
+
+
+
+
+-(instancetype)copyWithZone:(NSZone *)zone
+{
+    Molecule *mcopy = [[Molecule allocWithZone:zone]init];
+    [mcopy setMolarAmount:[NSNumber numberWithFloat:[[self molarAmount]floatValue]]];
+    [mcopy setMolarunit:[self molarunit]];
+    [mcopy setMassAmount:[NSNumber numberWithFloat:[[self massAmount]floatValue]]];
+    [mcopy setMassunit:massunit];
+    [mcopy setReturnAsMolar:[self returnAsMolar]];
+    [mcopy setMolecularWeight:[self molecularWeight]];
+    return mcopy;
+}
+
 -(instancetype)initWithMolarFloat:(float)amt molarUnit:(MolarUnit)un molecularWeight:(float)mw
 {
     self = [super init];
@@ -97,119 +168,5 @@
     else
         return  [[self massAmount]floatValue];
 }
-
--(void)convertToMassUnit:(MassUnit)mu
-{
-    if ([self massunit] > mu ){
-        int factor = (int)[self massunit] / (int)mu;
-        [self setMassAmount:[NSNumber numberWithFloat:[[self massAmount]floatValue] / factor]];
-        [self setMassunit:mu];
-    }
-    else if ([self massunit] < mu){
-        int factor = (int)mu / (int)[self massunit];
-        [self setMassAmount:[NSNumber numberWithFloat:[[self massAmount]floatValue] * factor]];
-        [self setMassunit:mu];
-    }
-}
--(void)convertToMolarUnit:(MolarUnit)mu
-{
-    if ([self molarunit] > mu ){
-        int factor = (int)[self molarunit] / (int)mu;
-        [self setMolarAmount:[NSNumber numberWithFloat:[[self molarAmount]floatValue] / factor]];
-        [self setMolarunit:mu];
-    }
-    else if ([self molarunit] < mu){
-        int factor = (int)mu / (int)[self molarunit];
-        [self setMolarAmount:[NSNumber numberWithFloat:[[self molarAmount]floatValue] * factor]];
-        [self setMolarunit:mu];
-    }
-}
-
-/*
- 
- -(NSString*)valueAsString
- {
- NSNumberFormatter *format = [[NSNumberFormatter alloc] init];
- [format setMaximumFractionDigits:4];
- return [NSString stringWithFormat:@"%@", [ format stringFromNumber:[self amount]]];
- }
- 
- 
- -(NSString*)unitString
- {
- if ([self unit] == MG){
- return @"mg";
- }
- else
- return @"mmol";
- }
- 
- -(NSString*)description
- {
- return [NSString stringWithFormat:@"%@ %@",[self valueAsString], [self unitString]];
- }
- -(float)getValueIn:(MassUnit)mu
- {
- if (mu == MOL && [self unit] == MMOL){
- return [[self amount]floatValue] / 1000.0;
- }
- else if (mu == MOL && [self unit] == MICROMOL){
- return  [[self amount]floatValue] / 1000000.0;
- }
- else if (mu == MMOL && [self unit] == MOL){
- return [[self amount]floatValue] * 1000.0;
- }
- else if (mu == MMOL && [self unit] == MICROMOL){
- return  [[self amount]floatValue] / 1000.0;
- }
- else if (mu == MICROMOL && [self unit] == MMOL){
- return [[self amount]floatValue] * 1000.0;
- }
- else if (mu == MICROMOL && [self unit] == MOL){
- return [[self amount] floatValue] * 1000000.0;
- }
- else if (mu == MG && [self unit] == G){
- return  [[self amount] floatValue] * 1000.0;
- }
- else if (mu == G && [self unit] == MG){
- return  [[self amount]floatValue] / 1000.0;
- }
- else if ((mu == MMOL && [self unit] == MG) || (mu == MOL && [self unit] == G)){
- return [[self amount]floatValue] / [self molecularWeight];
- }
- else if ((mu == MG && [self unit] == MMOL) || (mu == G && [self unit] == MOL)){
- return [[self amount]floatValue] * [self molecularWeight];
- }
- else if (mu == MG && [self unit] == MOL){
- return  [self getValueIn:MMOL] * [self molecularWeight];
- }
- else if (mu == MG && [self unit] == MICROMOL){
- return  [self getValueIn:MMOL] * [self molecularWeight];
- }
- else if (mu == G && [self unit] == MICROMOL){
- return [self getValueIn:MOL] * [self molecularWeight];
- }
- else if (mu == G && [self unit] == MMOL){
- return [self getValueIn:MOL] * [self molecularWeight];
- }
- else if (mu == MMOL && [self unit] == G){
- return  [self getValueIn:MG] / [self molecularWeight];
- }
- else if (mu == MOL && [self unit] == MG){
- return  [self getValueIn:G] /[ self molecularWeight];
- }
- else if (mu == MICROMOL && [self unit] == MG){
- return ([[self amount]floatValue] / 1000.0) /[self molecularWeight];
- }
- else if (mu == MICROMOL && [self unit] == G){
- return ([[self amount]floatValue] / 1000000.0)/ [self molecularWeight];
- }
- else
- return [[self amount]floatValue];
- }
- */
-
-
-
 
 @end

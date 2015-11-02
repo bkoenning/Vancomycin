@@ -17,11 +17,11 @@
     //return  self;
 //}
 
--(instancetype)init
-{
-    self = [self initWithCreatinineAmount:[[Creatinine alloc]initWithMassFloat:0 massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1 andUnits:DL]];
-    return self;
-}
+//-(instancetype)init
+//{
+  //  self = [self initWithCreatinineAmount:[[Creatinine alloc]initWithMassFloat:0 massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1 andUnits:DL]];
+   // return self;
+//}
 
 //@synthesize  value, units;
 

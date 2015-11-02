@@ -34,20 +34,25 @@
     [string appendString:[[self urineCr]description]];
     [string appendString:@"\nUrine Volume:  "];
     [string appendString:[[self urineVolume]description]];
+    [string appendString:@"\nDerived data:"];
+    [string appendString:@"\nCreatinine excreted:  "];
+    [string appendString:[[self creatinineExcreted]description]];
     return [NSString stringWithString:string];
 }
 
-
 -(Creatinine*)creatinineExcreted
 {
-   // if ([[[self urineCr]mol]returnAsMolar]){
-     //   return [[Creatinine alloc]initWithMolarFloat:[[[self urineCr]]] molarUnit:<#(MolarUnit)#>]
-    //}
-    
-    Molecule *cr  = [[self urineCr]getAmountPerVolume:[self urineVolume]];
-    Creatinine *CREA = [[self urineCr]getAmountPerVolume:<#(Volume *)#>]
-    return  cr;
-    
+    if ([[[self urineCr]mol]returnAsMolar]){
+        Molecule *num = [[self urineCr]withVolume:[self urineVolume]];
+        num = [num convertedToMolarUnit:MILLIMOL];
+        return  [[Creatinine alloc]initWithMolarFloat:[[num molarAmount]floatValue] molarUnit:[num molarunit]];
+        
+    }
+    else{
+        Molecule *num = [[self urineCr]withVolume:[self urineVolume]];
+        num = [num convertedToMassUnit:MILLIGRAM];
+        return [[Creatinine alloc]initWithMassFloat:[[num massAmount]floatValue] massUnit:[num massunit]];
+    }
 }
 
 @end

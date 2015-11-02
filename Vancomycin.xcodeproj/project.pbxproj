@@ -42,6 +42,7 @@
 		BDC218911BDFDC2700A3D172 /* CreatinineConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218901BDFDC2700A3D172 /* CreatinineConcentration.m */; settings = {ASSET_TAGS = (); }; };
 		BDC218941BDFDC6C00A3D172 /* Creatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218931BDFDC6C00A3D172 /* Creatinine.m */; settings = {ASSET_TAGS = (); }; };
 		BDC218971BDFDCD300A3D172 /* _24HourUrineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218961BDFDCD300A3D172 /* _24HourUrineViewController.m */; settings = {ASSET_TAGS = (); }; };
+		BDFD2FA21BE69A62002F370D /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD2FA11BE69A62002F370D /* Time.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +134,8 @@
 		BDC218931BDFDC6C00A3D172 /* Creatinine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Creatinine.m; sourceTree = "<group>"; };
 		BDC218951BDFDCD300A3D172 /* _24HourUrineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _24HourUrineViewController.h; sourceTree = "<group>"; };
 		BDC218961BDFDCD300A3D172 /* _24HourUrineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _24HourUrineViewController.m; sourceTree = "<group>"; };
+		BDFD2FA01BE69A62002F370D /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
+		BDFD2FA11BE69A62002F370D /* Time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Time.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +300,8 @@
 				BDC218811BDFD98C00A3D172 /* Concentration.m */,
 				BD5ADF6F1BE471CC0037E7D1 /* FlowRate.h */,
 				BD5ADF701BE471CC0037E7D1 /* FlowRate.m */,
+				BDFD2FA01BE69A62002F370D /* Time.h */,
+				BDFD2FA11BE69A62002F370D /* Time.m */,
 			);
 			name = GeneralTypes;
 			sourceTree = "<group>";
@@ -433,6 +438,7 @@
 			files = (
 				BD5ADF6E1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m in Sources */,
 				BDC2188E1BDFDB4F00A3D172 /* CalculatedClearanceTableViewController.m in Sources */,
+				BDFD2FA21BE69A62002F370D /* Time.m in Sources */,
 				BDC218851BDFD9F400A3D172 /* BasicInformationViewController.m in Sources */,
 				BDC218521BDFC99700A3D172 /* Gender.m in Sources */,
 				BDC218111BDFC6DC00A3D172 /* AppDelegate.m in Sources */,
