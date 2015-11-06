@@ -21,6 +21,12 @@
 @interface UrineCreatinine :  CreatinineConcentration
 
 
+
++(Creatinine*)maxDailyExcretion;
++(Creatinine*)minDailyExcretion;
+-(Creatinine*)creatinineExcreted: (Volume*)v;
+
+
 //@property (nonatomic) NSNumber *value;
 //@property (nonatomic) UrineCreatinineConcentrationUnit units;
 

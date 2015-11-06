@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD0219EF1BEAA02A00EBB523 /* UrineVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */; settings = {ASSET_TAGS = (); }; };
 		BD5ADF6E1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5ADF6D1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m */; settings = {ASSET_TAGS = (); }; };
 		BD5ADF711BE471CC0037E7D1 /* FlowRate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5ADF701BE471CC0037E7D1 /* FlowRate.m */; settings = {ASSET_TAGS = (); }; };
 		BDC2180E1BDFC6DC00A3D172 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2180D1BDFC6DC00A3D172 /* main.m */; };
@@ -63,6 +64,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD0219ED1BEAA02A00EBB523 /* UrineVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrineVolume.h; sourceTree = "<group>"; };
+		BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrineVolume.m; sourceTree = "<group>"; };
 		BD5ADF6C1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VancomycinNavigationControllerViewController.h; sourceTree = "<group>"; };
 		BD5ADF6D1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VancomycinNavigationControllerViewController.m; sourceTree = "<group>"; };
 		BD5ADF6F1BE471CC0037E7D1 /* FlowRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowRate.h; sourceTree = "<group>"; };
@@ -280,6 +283,8 @@
 				BDC218901BDFDC2700A3D172 /* CreatinineConcentration.m */,
 				BDC218921BDFDC6C00A3D172 /* Creatinine.h */,
 				BDC218931BDFDC6C00A3D172 /* Creatinine.m */,
+				BD0219ED1BEAA02A00EBB523 /* UrineVolume.h */,
+				BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */,
 			);
 			name = ClearanceGroup;
 			sourceTree = "<group>";
@@ -439,6 +444,7 @@
 				BD5ADF6E1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m in Sources */,
 				BDC2188E1BDFDB4F00A3D172 /* CalculatedClearanceTableViewController.m in Sources */,
 				BDFD2FA21BE69A62002F370D /* Time.m in Sources */,
+				BD0219EF1BEAA02A00EBB523 /* UrineVolume.m in Sources */,
 				BDC218851BDFD9F400A3D172 /* BasicInformationViewController.m in Sources */,
 				BDC218521BDFC99700A3D172 /* Gender.m in Sources */,
 				BDC218111BDFC6DC00A3D172 /* AppDelegate.m in Sources */,

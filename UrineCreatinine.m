@@ -8,9 +8,30 @@
 
 #import "UrineCreatinine.h"
 
-//const float MICROMOL_PER_LITER_PER_MILLIGRAMS_PER_DECILITER = 88.4;
-
 @implementation UrineCreatinine
+
+
+
++(Creatinine*)maxDailyExcretion
+{
+    return [[Creatinine alloc]initWithMassFloat:3750 massUnit:MILLIGRAM];
+}
++(Creatinine*)minDailyExcretion
+{
+    return [[Creatinine alloc]initWithMassFloat:525 massUnit:MILLIGRAM];
+}
+
+-(Creatinine*)creatinineExcreted:(Volume *)v
+{
+    Volume *converted  = [v convertedToVolumeUnit:[[self vol]unit]];
+    Concentration *conc = [self reduced];
+    float creat = [[[conc mol]massAmount]floatValue] * [[converted volume]floatValue];
+    return [[Creatinine alloc]initWithMassFloat:creat massUnit:[[conc mol]massunit]];
+}
+
+
+
+
 
 /*
 

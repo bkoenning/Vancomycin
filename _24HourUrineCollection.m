@@ -17,7 +17,7 @@
     //[self setSerumCr:[[SerumCreatinine alloc]initWithFloat:0 andUnits:MG_PER_DECILITER]];
     [self setUrineCr:[[UrineCreatinine alloc]init]];
     [self setSerumCr:[[SerumCreatinine alloc]init]];
-    [self setUrineVolume:[[Volume alloc]initWithFloat:0 andUnits:L]];
+    [self setUrineVolume:[[UrineVolume alloc]initWithFloat:0 andUnits:L]];
     [self setIsSet:NO];
     return  self;
 }

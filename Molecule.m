@@ -11,6 +11,34 @@
 
 @synthesize molarAmount, massAmount, massunit, molarunit, molecularWeight, returnAsMolar;
 
+
+-(int)compareTo:(Molecule *)m
+{
+    Molecule *mcopy = [self convertedToMassUnit:[m massunit]];
+    float diff = fabsf([[mcopy massAmount]floatValue] - [[m massAmount]floatValue]);
+    
+    if (diff < 0.00000001)
+        return 0;
+    else if ([[mcopy massAmount]floatValue] > [[m massAmount]floatValue])
+        return  1;
+    else
+        return -1;
+}
+
+-(BOOL)isInRangeLower:(Molecule *)lower upper:(Molecule *)upper
+{
+    if ([lower compareTo:upper] >= 0 ){
+        NSLog(@"Range arguments are equal or in wrong order");
+        return false;
+    }
+    else if ([self compareTo:lower] == -1 || [self compareTo:upper] == 1)
+        return false;
+    else
+        return true;
+    
+    
+}
+
 -(Molecule*)convertedToMolarUnit:(MolarUnit)mu
 {
     Molecule *result = [[Molecule alloc]init];
@@ -117,20 +145,21 @@
 -(NSString*)unitString
 {
     if ([self returnAsMolar]){
-        if ([self molarunit] == MOL) return @"mole(s)";
-        else if ([self molarunit] ==MILLIMOL) return  @"millimole(s)";
-        else return @"micromole(s)";
+        if ([self molarunit] == MOL) return @"mol";
+        else if ([self molarunit] ==MILLIMOL) return  @"mmol";
+        else return @"\u00B5mol";
     }
     else{
-        if ([self massunit] == G) return @"gram(s)";
-        else if ([self massunit] == MILLIGRAM) return @"milligram(s)";
-        else return  @"microgram(s)";
+        if ([self massunit] == G) return @"g";
+        else if ([self massunit] == MILLIGRAM) return @"mg";
+        else return  @"\u00B5g";
     }
 }
 -(NSString*)valueAsString
 {
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
     [format setMaximumFractionDigits:4];
+    [format setMinimumIntegerDigits:1];
     if ([self returnAsMolar]){
         return [NSString stringWithFormat:@"%@", [format stringFromNumber:[self molarAmount]]];
     }

@@ -21,6 +21,10 @@
 -(FlowRate*)reduced;
 -(Volume*)withTime: (Time*)t;
 -(Time*)withVolume: (Volume*)v;
--(FlowRate*)perTimeUnit: (TimeUnit)u;
+-(FlowRate*)inTimeUnit: (TimeUnit)u;
+-(FlowRate*)inVolumeUnit: (VolumeUnit)u;
+-(FlowRate*)inVolumeUnit:(VolumeUnit)vu andTimeUnit: (TimeUnit)tu;
+-(int)compareTo: (FlowRate*)fr;
+-(BOOL)isInRangeLower: (FlowRate*)lower upper:(FlowRate*)upper;
 
 @end

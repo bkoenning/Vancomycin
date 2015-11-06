@@ -24,9 +24,10 @@ typedef enum
 
 -(instancetype) initWithFloat: (float) vol andUnits: (VolumeUnit) un;
 -(NSString*) unitString;
-//-(void) convertTo: (VolumeUnit) vu;
--(Volume*)converted:(VolumeUnit)vu;
+-(Volume*)convertedToVolumeUnit:(VolumeUnit)vu;
 -(instancetype)copyWithZone:(NSZone *)zone;
+-(int)compareTo: (Volume*)v;
+-(BOOL)isInRangeLower: (Volume*)lower upper:(Volume*)upper;
 
 
 @end

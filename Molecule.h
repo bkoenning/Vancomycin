@@ -41,6 +41,9 @@ typedef enum
 -(Molecule*)convertedToMassUnit: (MassUnit)mu;
 -(Molecule*)convertedToMolarUnit: (MolarUnit)mu;
 -(instancetype)copyWithZone:(NSZone *)zone;
+-(int)compareTo:(Molecule*)m;
+-(BOOL)isInRangeLower: (Molecule*)lower upper:(Molecule*)upper;
+
 
 
 @end

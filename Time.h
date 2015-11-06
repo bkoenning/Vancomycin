@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NumberValue.h"
 
 typedef enum
 {
@@ -17,7 +18,7 @@ typedef enum
 }TimeUnit;
 
 
-@interface Time : NSObject <NSCopying>
+@interface Time : NSObject <NSCopying,NumberValue>
 
 @property NSNumber *time;
 @property TimeUnit timeUnit;
@@ -25,5 +26,7 @@ typedef enum
 -(instancetype)initWithFloat: (float)num andTimeUnit: (TimeUnit)tu;
 -(Time*)convertedTo: (TimeUnit)tu;
 -(instancetype)copyWithZone:(NSZone *)zone;
+-(int)compareTo: (Time*)t;
+-(BOOL)isInRangeLower: (Time*)lower upper:(Time*)upper;
 
 @end

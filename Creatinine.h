@@ -14,4 +14,6 @@
 -(instancetype)initWithMassFloat:(float)amt massUnit:(MassUnit)un;
 -(instancetype)initWithMolarFloat:(float)amt molarUnit:(MolarUnit)un;
 
+-(Creatinine*)convertedToMolarUnit:(MolarUnit)mu;
+-(Creatinine*)convertedToMassUnit: (MassUnit)mu;
 @end

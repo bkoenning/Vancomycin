@@ -12,6 +12,65 @@
 
 @synthesize mol,vol;
 
+-(Concentration*)convertedToMolarUnit:(MolarUnit)mu andVolumeUnit:(VolumeUnit)vu
+{
+    Molecule *newMol = [[self mol]convertedToMolarUnit:mu];
+    Volume *newVol = [[self vol]convertedToVolumeUnit:vu];
+    float newConc = [[newMol molarAmount]floatValue] / [[newVol volume]floatValue];
+    return [[Concentration alloc]initWithMolecularAmount:[[Molecule alloc]initWithMolarFloat:newConc molarUnit:mu molecularWeight:[[self mol]molecularWeight]] andVolume:[[Volume alloc]initWithFloat:1 andUnits:vu]];
+}
+
+
+-(int)compareTo:(Concentration *)c
+{
+    Concentration *convertedSelf = [self convertedToMassUnit:[[c mol]massunit] andVolumeUnit:[[c vol]unit]];
+    Concentration *reducedC = [c reduced];
+    
+    float dif = fabsf([[[convertedSelf mol]massAmount]floatValue] - [[[reducedC mol]massAmount]floatValue]);
+    
+    if (dif < 0.0000000001)
+        return 0;
+    else if ([[[convertedSelf mol]massAmount]floatValue] > [[[reducedC mol]massAmount]floatValue])
+        return 1;
+    else
+        return -1;
+    
+    
+}
+
+-(BOOL)isInRangeLower:(Concentration *)lower upper:(Concentration *)upper
+{
+    if ([lower compareTo:upper] >= 0){
+        NSLog(@"Range arguments are equal or in wrong order");
+        return false;
+    }
+    else if ([self compareTo:lower] == -1 || [self compareTo:upper] == 1)
+        return false;
+    else
+        return true;
+    
+    
+}
+
+-(Concentration*)convertedToMassUnit:(MassUnit)mu andVolumeUnit:(VolumeUnit)vu
+{
+    Volume *newVol = [[self vol]convertedToVolumeUnit:vu];
+    Molecule *newMol = [[self mol]convertedToMassUnit:mu];
+    float newConc = [[newMol massAmount]floatValue] / [[newVol volume]floatValue];
+    Volume *returnVol = [[Volume alloc]initWithFloat:1.0 andUnits:vu];
+    Molecule *returnMol = [[Molecule alloc]initWithMassFloat:newConc massUnit:mu molecularWeight:[[self mol]molecularWeight]];
+    return [[Concentration alloc]initWithMolecularAmount:returnMol andVolume:returnVol];
+    
+    
+}
+
+//-(int)compareTo:(Concentration *)c
+//{
+  //  Concentration *converted = [self ]
+    
+    
+//}
+
 -(Concentration*)reduced
 {
     Concentration *result = [[Concentration alloc]init];
@@ -31,7 +90,7 @@
 
 -(Molecule*)withVolume:(Volume *)v
 {
-    Volume *copy = [v converted:[[self vol]unit]];
+    Volume *copy = [v convertedToVolumeUnit:[[self vol]unit]];
     Concentration *reduced = [self reduced];
     if ([[self mol]returnAsMolar])
         return  [[Molecule alloc]initWithMolarFloat:[[copy volume]floatValue] * [[[reduced mol]molarAmount]floatValue] molarUnit:[[self mol]molarunit] molecularWeight:[[self mol]molecularWeight]];

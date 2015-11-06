@@ -9,7 +9,7 @@
 #import "TableItem.h"
 #import "SerumCreatinine.h"
 #import "UrineCreatinine.h"
-#import "Volume.h"
+#import "UrineVolume.h"
 #import "Creatinine.h"
 #import "CreatinineConcentration.h"
 
@@ -18,7 +18,7 @@
 
 @property (nonatomic) SerumCreatinine *serumCr;
 @property (nonatomic) UrineCreatinine *urineCr;
-@property (nonatomic) Volume *urineVolume;
+@property (nonatomic) UrineVolume *urineVolume;
 
 -(Creatinine*)creatinineExcreted;
 

@@ -27,5 +27,16 @@
     return  self;
 }
 
+-(Creatinine*)convertedToMassUnit:(MassUnit)mu
+{
+    Molecule *m = [super convertedToMassUnit:mu];
+    return [[Creatinine alloc]initWithMassFloat:[[m massAmount]floatValue] massUnit:mu];
+}
+-(Creatinine*)convertedToMolarUnit:(MolarUnit)mu
+{
+    Molecule *m = [super convertedToMolarUnit:mu];
+    return [[Creatinine alloc]initWithMolarFloat:[[m molarAmount]floatValue] molarUnit:mu];
+}
+
 
 @end

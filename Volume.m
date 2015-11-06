@@ -27,7 +27,7 @@
     else return @"L";
 }
 
--(Volume*)converted:(VolumeUnit)vu
+-(Volume*)convertedToVolumeUnit:(VolumeUnit)vu
 {
     Volume *result = [[Volume alloc]init];
     if ([self unit] > vu){
@@ -46,41 +46,11 @@
     return  result;
 }
 
-
-/*-(void)convertTo:(VolumeUnit)vu
-{
-    if ([self unit] > vu){
-        int factor = (int)[self unit] / (int) vu;
-        [self setVolume:[NSNumber numberWithFloat:[[self volume]floatValue] / factor]];
-        [self setUnit:vu];
-    }
-    else if ([self unit] < vu){
-        int factor = (int)vu / (int)[self unit];
-        [self setVolume:[NSNumber numberWithFloat:[[self volume]floatValue] * factor]];
-        [self setUnit:vu];
-    }
-}
- 
-
--(Volume*)getVolumeAs:(VolumeUnit)vu
-{
-    
-    if ([self unit] > vu){
-        int factor = (int)[self unit] / (int)vu;
-        return  [[Volume alloc]initWithFloat:[[self volume]floatValue] / factor andUnits:vu];
-    }
-    else if ([self unit] < vu){
-        int factor = (int)vu / (int)[self unit];
-        return  [[Volume alloc]initWithFloat:[[self volume]floatValue] * factor andUnits:vu];
-    }
-    else
-        return  [[Volume alloc] initWithFloat:[[self volume]floatValue] andUnits:vu];
-}
- */
 -(NSString*) valueAsString
 {
     NSNumberFormatter *format = [[NSNumberFormatter alloc] init];
     [format setMaximumFractionDigits:2];
+    [format setMinimumIntegerDigits:1];
     return [NSString stringWithFormat:@"%@", [ format stringFromNumber:[self volume]]];
 }
 
@@ -89,23 +59,36 @@
     Volume *volcopy = [[Volume allocWithZone:zone]initWithFloat:[[self volume]floatValue] andUnits:[self unit]];
     return  volcopy;
 }
-/*
- -(NSNumber*) getValueAs:(VolumeUnit)vu
- {
- if (vu == L && [self unit] == ML){
- return  [NSNumber numberWithFloat:[[self volume]floatValue] / 1000];
- }
- else if (vu == ML && [self unit ] == L){
- return [NSNumber numberWithFloat:[[self volume] floatValue ] * 1000];
- }
- else
- return [self volume];
- }
- */
 
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"%@%@", [self valueAsString], [self unitString]];
+    return [NSString stringWithFormat:@"%@ %@", [self valueAsString], [self unitString]];
+}
+
+-(int)compareTo:(Volume *)v
+{
+    Volume *convert = [self convertedToVolumeUnit:[v unit]];
+    float dif = fabsf([[convert volume]floatValue] - [[v volume]floatValue]);
+    
+    if (dif < 0.0000000001)
+        return 0;
+    else if ([[v volume]floatValue] > [[convert volume]floatValue])
+        return  -1;
+    else
+        return  1;
+    
+}
+
+-(BOOL)isInRangeLower:(Volume *)lower upper:(Volume *)upper
+{
+    if ([lower compareTo:upper] >=0){
+        NSLog(@"Range arguments are equal or in wrong order");
+        return false;
+    }
+    else if ([self compareTo:lower] == -1 || [self compareTo:upper] ==1)
+        return  false;
+    else
+        return true;
 }
 
 @end
