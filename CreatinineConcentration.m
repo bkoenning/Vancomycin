@@ -17,10 +17,4 @@
     return  self;
 }
 
-//-(instancetype)initWithCreatinineAmount:(Creatinine *)cr andVolume:(Volume *)v
-//{
-  //  self = [super initWithMolecularAmount:cr andVolume:v];
-    //return  self;
-//}
-
 @end

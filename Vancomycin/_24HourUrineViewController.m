@@ -9,47 +9,49 @@
 #import "_24HourUrineViewController.h"
 
 @interface _24HourUrineViewController (){
-    NSMutableArray *enabledViews;
-    UITapGestureRecognizer *recognizer;
+    NSMutableArray *enabledViews;   // the view components to be enabled and disabled during locking
+    UITapGestureRecognizer *recognizer;  //recognizer to record taps outside the entry area to dismiss keypad
 }
-
 @end
 
 @implementation _24HourUrineViewController
 
-
-
 @synthesize detailItem;
 
-
--(void)setDetailItem: (_24HourUrineCollection*) newDetailItem
+-(void)setDetailItem: (_24HourUrineCollection*) newDetailItem  //set the information from the top view controller
 {
-    if (newDetailItem != nil && [self detailItem] != newDetailItem){
+    if (newDetailItem != nil && [self detailItem] != newDetailItem)
         detailItem = newDetailItem;
-    }
-    
-    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    // load the array with references to views that can be enabled/disabled
     enabledViews = [NSMutableArray arrayWithObjects:[self segUCr], [self segScr], [self segUrineVolume], [self urineCrText], [self serumCrText], [self urineVolumeText],nil];
+    // set the view
     [self configureView];
-    
+    // set the tap recognizer with the hide keyboard selector
     recognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyboard)];
-    // NSLog(@"%@", [[[self detailItem]urineCr]valueAsString]);
-    // Do any additional setup after loading the view.
+}
+
+-(void)hideKeyboard
+{
+    // dismiss the keypad from the textfield views
+    [[self serumCrText]resignFirstResponder];
+    [[self urineVolumeText]resignFirstResponder];
+    [[self urineCrText]resignFirstResponder];
+    // disable the recognizer while the keypad is not on screen
+    [recognizer setEnabled:NO];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)configureView
 {
+    // fill in the views with information if the data from the top controller is verified as valid
     if ([[self detailItem]isSet]){
-        //[[self urineCrText]setText:[[[self detailItem]urineCr]valueAsString]];
         [[self urineCrText]setText:[[[[self detailItem]urineCr]mol]valueAsString]];
         [[self serumCrText] setText:[[[[self detailItem]serumCr]mol]valueAsString]];
         [[self urineVolumeText] setText:[[[self detailItem]urineVolume]valueAsString]];
@@ -64,43 +66,272 @@
         else{
             [[self segScr] setSelectedSegmentIndex:1];
         }
+        
         if (![[[[self detailItem]urineCr]mol]returnAsMolar]){
             [[self segUCr]setSelectedSegmentIndex:0];
         }
         else{
             [[self segUCr]setSelectedSegmentIndex:1];
         }
-        
+        //set the button title to unlock information for editing
         [[self lockButton]setTitle:@"Unlock Information" forState:UIControlStateNormal];
-        
+        // disable the views that have been filled in with good data so that user must click unlock to edit
         for (UIControl *con in enabledViews){
             [con setEnabled:NO];
         }
     }
-    
 }
 
 -(void)validateAndLockInformation:(id)sender
 {
-    NSRegularExpression *creatinineReg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{1,5}(\\.\\d{1,5}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSTextCheckingResult *serumCreatinineMatch = [creatinineReg firstMatchInString:[self.serumCrText text] options:0 range:NSMakeRange(0, [[self.serumCrText text]length])];
-    NSTextCheckingResult *urineCreatinineMatch = [creatinineReg firstMatchInString:[self.urineCrText text] options:0 range:NSMakeRange(0, [[self.urineCrText text]length])];
-    NSRegularExpression *urineVolumeReg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{1,5}(\\.\\d{1,5}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSTextCheckingResult *urineVolumeMatch = [urineVolumeReg firstMatchInString:[self.urineVolumeText text] options:0 range:NSMakeRange(0, [[self.urineVolumeText text]length])];
+    
+    BOOL dataOK = YES;
+    SerumCreatinine *userSCR;
+    UrineCreatinine *userUrineCR;
+    Creatinine *userCR;
+    UrineVolume *userUrineVol;
+    
+    UrineVolume *maxUrine = [UrineVolume maxDaily];
+    UrineVolume *minUrine = [UrineVolume minDaily];
+    SerumCreatinine *minSCR = [SerumCreatinine minConcentration];
+    SerumCreatinine *maxSCR = [SerumCreatinine maxConcentration];
+    Creatinine *minCreat = [UrineCreatinine minDailyExcretion];
+    Creatinine *maxCreat = [UrineCreatinine maxDailyExcretion];
+    
+    /* if information is unlockable, set the editing views to enabled, changed to title of the button to indicate
+     information can be locked, set the data object to bad data, and notify from the object that data has been set to bad, and exit the method */
+    if ([[[[self lockButton]titleLabel]text]isEqualToString:@"Unlock Information"]){
+        for (UIControl *con in enabledViews){
+            [con setEnabled: YES];
+        }
+        [[self lockButton]setTitle:@"Lock Information" forState:UIControlStateNormal];
+        [[self detailItem]setIsSet:NO];
+        [[self detailItem]postDidChangeNotification];
+        dataOK = NO;
+    }
+    
+    // display an alert to the user if nothing was selected for urine volume units
+    if ([[self segUrineVolume]selectedSegmentIndex]== UISegmentedControlNoSegment && dataOK){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for urine volume units" message:@"Select a unit of measure for urine volume." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:act];
+        [self presentViewController:alert animated:YES completion:nil];
+        dataOK = NO;
+    }
+    // display an alert to the user if nothing was selected for urine creatinine units
+    if ([[self segUCr]selectedSegmentIndex]== UISegmentedControlNoSegment && dataOK){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for urine creatinine concentration units" message:@"Select a unit of measure for urine creatinine." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:act];
+        [self presentViewController:alert animated:YES completion:nil];
+        dataOK = NO;
+    }
+    // display an alert to the user if nothing was selected for serum creatinine units
+    if ([[self segScr]selectedSegmentIndex]== UISegmentedControlNoSegment && dataOK){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for serum creatinine concentration units" message:@"Select a unit of measure for serum creatinine." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:act];
+        [self presentViewController:alert animated:YES completion:nil];
+        dataOK = NO;
+    }
+    // preliminary regex check for urine volume if mL was selected for units
+    if ([[self segUrineVolume] selectedSegmentIndex] == 0 && dataOK){
+        NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{3,4})(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *urineVolumeMatch = [reg firstMatchInString:[self.urineVolumeText text] options:0 range:NSMakeRange(0, [[self.urineVolumeText text]length])];
+        BOOL isUrineVolumeMatched = urineVolumeMatch != nil;
+        if (!isUrineVolumeMatched){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for urine volume is in an invalid format." message:@"Maximum allowable format is #####.## and this value must have at least 3 whole number place values." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        else{
+            userUrineVol = [[UrineVolume alloc]initWithFloat:[[[self urineVolumeText]text]floatValue] andUnits:ML];
+            minUrine = [minUrine converted:ML];
+            maxUrine = [maxUrine converted:ML];
+        }
+    }
+    // preliminary regex check for urine volume if L was selected for units
+    if ([[self segUrineVolume] selectedSegmentIndex] == 1 && dataOK){
+        NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1})?(\\.\\d{1,5}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSRegularExpression *regA = [NSRegularExpression regularExpressionWithPattern:@"(\\d{1})+" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *urineVolumeMatch = [reg firstMatchInString:[self.urineVolumeText text] options:0 range:NSMakeRange(0, [[self.urineVolumeText text]length])];
+        NSTextCheckingResult *urineVolumeMatchA = [regA firstMatchInString:[self.urineVolumeText text] options:0 range:NSMakeRange(0, [[self.urineVolumeText text]length])];
+        BOOL isUrineVolumeMatched = urineVolumeMatch != nil;
+        BOOL isUrineVolumeMatchedA = urineVolumeMatchA != nil;
+        if (!isUrineVolumeMatched || !isUrineVolumeMatchedA){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for urine volume is in an invalid format." message:@"Maximum allowable format is #.##### and this value must have at least 1 digit" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        else{
+            userUrineVol = [[UrineVolume alloc]initWithFloat:[[[self urineVolumeText]text]floatValue] andUnits:L];
+            minUrine = [minUrine converted:L];
+            maxUrine = [maxUrine converted:L];
+        }
+    }
+
+    
+    // preliminary regex check for serum creatinine if mg/dL was selected for serum creatinine units, range is 0.20 to 5.50
+    if ([[self segScr]selectedSegmentIndex] == 0 && dataOK){
+        NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1})?(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSRegularExpression *regA = [NSRegularExpression regularExpressionWithPattern:@"(\\d{1})+" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *serumCreatinineMatch = [reg firstMatchInString:[self.serumCrText text] options:0 range:NSMakeRange(0, [[self.serumCrText text]length])];
+        NSTextCheckingResult *serumCreatinineMatchA = [regA firstMatchInString:[self.serumCrText text] options:0 range:NSMakeRange(0, [[self.serumCrText text]length])];
+        BOOL isSerumCreatinineMatched = serumCreatinineMatch != nil;
+        BOOL isSerumCreatinineMatchedA = serumCreatinineMatchA != nil;
+        if (!isSerumCreatinineMatched || !isSerumCreatinineMatchedA){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for serum creatinine is in an invalid format." message:@"Maximum allowable format is #.## and this value must have at least 1 digit" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        else{
+            userSCR = [[SerumCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMassFloat:[[[self serumCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1 andUnits:DL]];
+            minSCR = [minSCR convertedToMassUnit:MILLIGRAM andVolumeUnit:DL];
+            maxSCR = [maxSCR convertedToMassUnit:MILLIGRAM andVolumeUnit:DL];
+        }
+    }
+    // preliminary regex check for serum creatinine if micromol/L was selected for serum creatinine units
+    if ([[self segScr]selectedSegmentIndex] == 1 && dataOK){
+        NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{2,3})(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *serumCreatinineMatch = [reg firstMatchInString:[self.serumCrText text] options:0 range:NSMakeRange(0, [[self.serumCrText text]length])];
+        BOOL isSerumCreatinineMatched = serumCreatinineMatch != nil;
+        if (!isSerumCreatinineMatched){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for serum creatinine is in an invalid format." message:@"Maximum allowable numeric format is ###.## and this value must have at least 2 whole number places." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        else{
+            userSCR = [[SerumCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self serumCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1 andUnits:L]];
+            minSCR = [minSCR convertedToMolarUnit:MICROMOL andVolumeUnit:L];
+            maxSCR = [maxSCR convertedToMolarUnit:MICROMOL andVolumeUnit:L];
+        }
+    }
+    // preliminary regex check for urine creatinine if mg/dL was selected for urine creatinine units
+    if ([[self segUCr] selectedSegmentIndex] == 0 && dataOK){
+        NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1,3})(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *urineCreatinineMatch = [reg firstMatchInString:[self.urineCrText text] options:0 range:NSMakeRange(0, [[self.urineCrText text]length])];
+        BOOL isUrineCreatinineMatched = urineCreatinineMatch != nil;
+        if (!isUrineCreatinineMatched){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for urine creatinine is in an invalid format." message:@"Maximum allowable format is ###.## and this value must have at least 1 whole number." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        else{
+            userUrineCR = [[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMassFloat:[[[self urineCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1 andUnits:DL]];
+            userCR = [userUrineCR creatinineExcreted:userUrineVol];
+            userCR = [userCR convertedToMassUnit:MILLIGRAM];
+            minCreat = [minCreat convertedToMassUnit:MILLIGRAM];
+            maxCreat = [maxCreat convertedToMassUnit:MILLIGRAM];
+        }
+    }
+    //  preliminary regex check for urine creatinine if micromol/L was selected for urine creatinine units
+    if ([[self segUCr] selectedSegmentIndex] ==1 && dataOK){
+        NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{3,5})(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSTextCheckingResult *urineCreatinineMatch = [reg firstMatchInString:[self.urineCrText text] options:0 range:NSMakeRange(0, [[self.urineCrText text]length])];
+        BOOL isUrineCreatinineMatched = urineCreatinineMatch != nil;
+        if (!isUrineCreatinineMatched){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for urine creatinine is in an invalid format." message:@"Maximum allowable format is #####.## and this value must have at least 3 whole number places" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        else{
+            userUrineCR = [[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self urineCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1 andUnits:L]];
+            userCR = [userUrineCR creatinineExcreted:userUrineVol];
+            userCR = [userCR convertedToMolarUnit:MILLIMOL];
+            minCreat = [minCreat convertedToMolarUnit:MILLIMOL];
+            maxCreat= [maxCreat convertedToMolarUnit:MILLIMOL];
+        }
+    }
+    if (dataOK){
+        NSString *messageHeader;
+        NSString *messageTail;
+        NSString *userValue;
+        NSString *argument1;
+        NSString *argument2;
+        
+        if (![userCR isInRangeLower:minCreat upper:maxCreat]){
+            messageHeader = @"Creatinine excreted in 24 hours";
+            messageTail = @"Verify urine volume and urine creatinine concentration.";
+            userValue = [userCR description];
+            argument1 = [minCreat description];
+            argument2 = [maxCreat description];
+        }
+        else if (![userSCR isInRangeLower:minSCR upper:maxSCR]){
+            messageHeader = @"Serum creatinine";
+            messageTail = @"Verify serum creatinine.";
+            argument1 = [minSCR description];
+            argument2 = [maxSCR description];
+            userValue = [userSCR description];
+        }
+        else if (![userUrineVol isInRangeLower:minUrine upper:maxUrine]){
+            messageHeader = @"Urine volume";
+            messageTail = @"Verify urine volume.";
+            argument1 = [minUrine description];
+            argument2 = [maxUrine description];
+            userValue = [userUrineVol description];
+        }
+        
+        if (messageTail){
+            NSString *message = [NSString stringWithFormat:@"%@%@%@%@%@%@%@%@%@", messageHeader, @" is out of range at ",userValue, @".  ",  @"The range accepted is ", argument1, @" to ", argument2, @"."];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:messageTail preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        else
+        {
+            [[self detailItem]setUrineCr:userUrineCR];
+            [[self detailItem]setUrineVolume:userUrineVol];
+            [[self detailItem]setSerumCr:userSCR];
+            [[self detailItem]setIsSet:YES];
+            [[self detailItem]postDidChangeNotification];
+            [[self lockButton]setTitle:@"Unlock Information" forState:UIControlStateNormal];
+            for (UIControl *con in enabledViews){
+                [con setEnabled:NO];
+            }
+            
+        }
+        
+    }
+    
+        /*
+        if (![userUrineVol isInRangeLower:minUrine upper:maxUrine]){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"The entry for urine volume is out of range." message:[NSString stringWithFormat:@"%@%@%@%@", @"Urine volume "] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:act];
+            [self presentViewController:alert animated:YES completion:nil];
+            dataOK = NO;
+        }
+        
+    }
+    
+    
+    
+    // regex for intial evaluation of creatinine levels, an optional digit 1 to 5 digits in length before an optional decimal point, followed by an optional 1 to 5 digits after the decimal point
+    NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1,5})?(\\.\\d{0,5})?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSTextCheckingResult *serumCreatinineMatch = [reg firstMatchInString:[self.serumCrText text] options:0 range:NSMakeRange(0, [[self.serumCrText text]length])];
+    NSTextCheckingResult *urineCreatinineMatch = [reg firstMatchInString:[self.urineCrText text] options:0 range:NSMakeRange(0, [[self.urineCrText text]length])];
+    //NSRegularExpression *urineVolumeReg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{1,5}(\\.\\d{1,5}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSTextCheckingResult *urineVolumeMatch = [reg firstMatchInString:[self.urineVolumeText text] options:0 range:NSMakeRange(0, [[self.urineVolumeText text]length])];
     
     BOOL isSerumCreatinineMatched = serumCreatinineMatch != nil;
     BOOL isUrineVolumeMatched = urineVolumeMatch != nil;
     BOOL isUrineCreatinineMatched = urineCreatinineMatch != nil;
     
-    if ([[[[self lockButton]titleLabel]text]isEqualToString:@"Unlock Information"]){
-        for (UIControl *con in enabledViews){
-            [con setEnabled: YES];
-        }
-        
-        [[self lockButton]setTitle:@"Lock Information" forState:UIControlStateNormal];
-        [[self detailItem]setIsSet:NO];
-        [[self detailItem]postDidChangeNotification];
-    }
+*/
+    /*
     else if (!isSerumCreatinineMatched){
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Invalid entry for serum creatinine" message:@"Re-enter serum creatinine.  Be sure to enter a leading zero for decimal values less than 1" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -119,30 +350,9 @@
         [alert addAction:act];
         [self presentViewController:alert animated:YES completion:nil];
     }
-    else if ([[self segUrineVolume]selectedSegmentIndex]== UISegmentedControlNoSegment){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for urine volume units" message:@"Select a unit of measure for urine volume." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if ([[self segScr]selectedSegmentIndex]== UISegmentedControlNoSegment){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for serum creatinine concentration units" message:@"Select a unit of measure for serum creatinine." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if ([[self segUCr]selectedSegmentIndex]== UISegmentedControlNoSegment){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for urine creatinine concentration units" message:@"Select a unit of measure for urine creatinine." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if ([[self segUrineVolume]selectedSegmentIndex]== UISegmentedControlNoSegment){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Nothing selected for urine volume units of measure" message:@"Select a unit of measure for urine volume." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
+
+
+
     else{
         UrineVolume *maxUrine = [UrineVolume maxDaily];
         UrineVolume *minUrine = [UrineVolume minDaily];
@@ -224,111 +434,26 @@
                 [con setEnabled:NO];
             }
         }
-    }
-    
-    
-    
-    /*
-    else if (([[[self urineVolumeText]text]floatValue] < 0.6 || [[[self urineVolumeText]text]floatValue] > 8) && [[self segUrineVolume]selectedSegmentIndex] ==1 ){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Out of range value for urine volume" message:@"Urine volume must be between 0.6 and 8 liters" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if (([[[self urineVolumeText]text]floatValue] < 600 || [[[self urineVolumeText]text]floatValue] > 8000) && [[self segUrineVolume]selectedSegmentIndex] == 0 ){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Out of range value for urine volume" message:@"Urine volume must be between 600 and 8000 milliliters" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if (([[[self serumCrText]text]floatValue] < 0.3 || [[[self serumCrText]text]floatValue] > 5.0) && [[self segScr]selectedSegmentIndex] == 0 ){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Out of range value for serum creatinine" message:@"Serum creatinine must be between 0.3 and 5.0 milligrams/deciliter" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if (([[[self serumCrText]text]floatValue] < 26.52 || [[[self serumCrText]text]floatValue] > 442) && [[self segScr]selectedSegmentIndex] == 1 ){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Out of range value for serum creatinine" message:@"Serum creatinine must be between 26.52 and 442 micromoles/liter" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if (([[[self urineCrText]text]floatValue] * ([[[self urineVolumeText]text]floatValue] / 100.0) > 4000 && [[self segUCr]selectedSegmentIndex] == 0 && [[self segUrineVolume]selectedSegmentIndex] == 0) || ([[[self urineCrText]text]floatValue] * ([[[self urineVolumeText]text]floatValue] / 100.0) < 500 && [[self segUCr]selectedSegmentIndex] == 0 && [[self segUrineVolume]selectedSegmentIndex] == 0)){
-        int num = [[[self urineCrText]text]floatValue] * ([[[self urineVolumeText]text]floatValue] / 100.0);
-        NSString *alertString = [NSString stringWithFormat:@"%@%d%@", @"Total urine creatinine excreted in 24 hours is calculated to be ", num, @" milligrams.  Permissible daily excretion of creatinine is 500mg/day to 4000mg/day for this program."];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertString message:@"Verify urine volume and urine creatinine concentration." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if (([[[self urineCrText]text]floatValue] * ([[[self urineVolumeText]text]floatValue] * 10) > 4000 && [[self segUCr]selectedSegmentIndex] == 0 && [[self segUrineVolume]selectedSegmentIndex] == 1) || ([[[self urineCrText]text]floatValue] * ([[[self urineVolumeText]text]floatValue] * 10) < 500 && [[self segUCr]selectedSegmentIndex] == 0 && [[self segUrineVolume]selectedSegmentIndex] == 1)){
-        int num = [[[self urineCrText]text]floatValue] * ([[[self urineVolumeText]text]floatValue] * 10);
-        NSString *alertString = [NSString stringWithFormat:@"%@%d%@", @"Total urine creatinine excreted in 24 hours is calculated to be ", num, @" milligrams.  Permissible daily excretion of creatinine is 500mg/day to 4000mg/day for this program."];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertString message:@"Verify urine volume and urine creatinine concentration." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if ((([[[self urineCrText]text]floatValue] / 1000) * ([[[self urineVolumeText]text]floatValue] / 1000) > 26.4 && [[self segUCr]selectedSegmentIndex] == 1 && [[self segUrineVolume]selectedSegmentIndex] == 0) || (([[[self urineCrText]text]floatValue] /1000) * (([[[self urineVolumeText]text]floatValue] / 1000)) < 3.5 && [[self segUCr]selectedSegmentIndex] == 1 && [[self segUrineVolume]selectedSegmentIndex] == 0)){
-        float num = (int)((([[[self urineCrText]text]floatValue] / 1000) * ([[[self urineVolumeText]text]floatValue] / 1000)) * 10) / 10.0 ;
-        NSString *alertString = [NSString stringWithFormat:@"%@%f%@", @"Total urine creatinine excreted in 24 hours is calculated to be ", num, @" millimoles.  Permissible daily excretion of creatinine is 3.5millimoles/day to 26.4millimoles/day for this program."];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertString message:@"Verify urine volume and urine creatinine concentration." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if ((([[[self urineCrText]text]floatValue] / 1000) * ([[[self urineVolumeText]text]floatValue]) > 26.4 && [[self segUCr]selectedSegmentIndex] == 1 && [[self segUrineVolume]selectedSegmentIndex] == 1) || (([[[self urineCrText]text]floatValue] / 1000) * ([[[self urineVolumeText]text]floatValue]) < 3.5 && [[self segUCr]selectedSegmentIndex] == 1 && [[self segUrineVolume]selectedSegmentIndex] == 1)){
-        float num = ((int)((([[[self urineCrText]text]floatValue] / 1000) * ([[[self urineVolumeText]text]floatValue]))) * 10) / 10.0 ;
-        NSString *alertString = [NSString stringWithFormat:@"%@%f%@", @"Total urine creatinine excreted in 24 hours is calculated to be ", num, @" millimoles.  Permissible daily excretion of creatinine is 3.5millimoles/day to 26.4millimoles/day for this program."];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertString message:@"Verify urine volume and urine creatinine concentration." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:act];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    //  else if (([[[self urineCrText]text]floatValue] < 5 || [[[self serumCrText]text]floatValue] > 200) && [[self segScr]selectedSegmentIndex] == 0 ){
-    //    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Out of range value for urine creatinine" message:@"Urine creatinine must be between 5 and 200 milligrams/deciliter" preferredStyle:UIAlertControllerStyleAlert];
-    //  UIAlertAction *act = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-    //[alert addAction:act];
-    //[self presentViewController:alert animated:YES completion:nil];
-    //}
-    
-    
-    else{
-        
-        [[self detailItem]setIsSet:YES];
-        if ([[self segUCr]selectedSegmentIndex] == 1)
-            [[self detailItem]setUrineCr:[[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self urineCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:L]]];
-        else
-            [[self detailItem]setUrineCr:[[UrineCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMassFloat:[[[self urineCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:DL]]];
-        if ([[self segUrineVolume]selectedSegmentIndex] == 1)
-            [[self detailItem]setUrineVolume:[[Volume alloc]initWithFloat:[[[self urineVolumeText]text]floatValue] andUnits:L]];
-        else
-            [[self detailItem]setUrineVolume:[[Volume alloc]initWithFloat:[[[self urineVolumeText]text]floatValue] andUnits:ML]];
-        if ([[self segScr]selectedSegmentIndex] == 1)
-            [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMolarFloat:[[[self serumCrText]text]floatValue] molarUnit:MICROMOL] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:L]]];
-        else
-            [[self detailItem]setSerumCr:[[SerumCreatinine alloc]initWithMolecularAmount:[[Creatinine alloc]initWithMassFloat:[[[self serumCrText]text]floatValue] massUnit:MILLIGRAM] andVolume:[[Volume alloc]initWithFloat:1.0 andUnits:DL]]];
-        [[self detailItem]postDidChangeNotification];
-        [[self lockButton]setTitle:@"Unlock Information" forState:UIControlStateNormal];
-        for (UIControl *con in enabledViews){
-            [con setEnabled:NO];
-        }
+     
     }*/
 }
 
 
-
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self.view endEditing:YES];
+    // when a user taps outside and editing area end editing for the view and disable recognizer while keypad is not on screen
+    [[self view]endEditing:YES];
     [recognizer setEnabled:NO];
 }
 
+
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    // enable the tap recognizer when keypad appears on screen
     [recognizer setEnabled:YES];
     return YES;
 }
+
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -336,27 +461,9 @@
     return YES;
 }
 
-
--(void)hideKeyboard
+-(BOOL)shouldAutorotate
 {
-    //[ resignFirstResponder];
-    [[self serumCrText]resignFirstResponder];
-    //[textFieldAge resignFirstResponder];
-    [[self urineVolumeText]resignFirstResponder];
-    //[textFieldHeight resignFirstResponder];
-    
-    [[self urineCrText]resignFirstResponder];
-    [recognizer setEnabled:NO];
+    return NO;
 }
 
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 @end

@@ -12,6 +12,7 @@
 
 @interface SerumCreatinine : CreatinineConcentration
 
+
 +(SerumCreatinine*)maxConcentration;
 +(SerumCreatinine*)minConcentration;
 

@@ -29,6 +29,16 @@
 @property (nonatomic) IBOutlet UITextField *textFieldWeight;
 @property (nonatomic) IBOutlet UITextField *textFieldHeight;
 @property (nonatomic) IBOutlet UIButton *buttonValidate;
+@property (nonatomic) IBOutlet UILabel *labelLLLeg;
+@property (nonatomic) IBOutlet UILabel *labelLULeg;
+@property (nonatomic) IBOutlet UILabel *labelRULeg;
+@property (nonatomic) IBOutlet UILabel *labelRLLeg;
+@property (nonatomic) IBOutlet UILabel *labelRUArm;
+@property (nonatomic) IBOutlet UILabel *labelRLArm;
+@property (nonatomic) IBOutlet UILabel *labelLUArm;
+@property (nonatomic) IBOutlet UILabel *labelLLArm;
+
+
 
 -(IBAction)updateLLL:(id)sender;
 -(IBAction)updateLLA:(id)sender;

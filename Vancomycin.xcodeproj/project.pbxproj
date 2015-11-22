@@ -7,9 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD0219EF1BEAA02A00EBB523 /* UrineVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */; settings = {ASSET_TAGS = (); }; };
-		BD5ADF6E1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5ADF6D1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m */; settings = {ASSET_TAGS = (); }; };
-		BD5ADF711BE471CC0037E7D1 /* FlowRate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5ADF701BE471CC0037E7D1 /* FlowRate.m */; settings = {ASSET_TAGS = (); }; };
+		BD000B971BEC48C300D04608 /* CreatinineClearance.m in Sources */ = {isa = PBXBuildFile; fileRef = BD000B961BEC48C300D04608 /* CreatinineClearance.m */; };
+		BD0219EF1BEAA02A00EBB523 /* UrineVolume.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */; };
+		BD2F8A971BFC1D56007FDCB1 /* DualSerumCreatinineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2F8A961BFC1D56007FDCB1 /* DualSerumCreatinineViewController.m */; };
+		BD3B0DA31C000A3200E28932 /* Albumin.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0DA21C000A3200E28932 /* Albumin.m */; };
+		BD3B0DA91C000FA600E28932 /* AlbuminConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0DA81C000FA600E28932 /* AlbuminConcentration.m */; };
+		BD5ADF6E1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5ADF6D1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m */; };
+		BD5ADF711BE471CC0037E7D1 /* FlowRate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5ADF701BE471CC0037E7D1 /* FlowRate.m */; };
+		BD62CA7C1BFF627000FD2DB5 /* BUNConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BD62CA7B1BFF627000FD2DB5 /* BUNConcentration.m */; };
+		BD8174851BFE707000B41B6B /* SingleValueSerumCreatinineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD8174841BFE707000B41B6B /* SingleValueSerumCreatinineViewController.m */; };
+		BD8174881BFE716800B41B6B /* BUN.m in Sources */ = {isa = PBXBuildFile; fileRef = BD8174871BFE716800B41B6B /* BUN.m */; };
+		BDBFA13F1BF42DAE00C1FDCD /* BaseValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BDBFA13E1BF42DAE00C1FDCD /* BaseValue.m */; };
 		BDC2180E1BDFC6DC00A3D172 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2180D1BDFC6DC00A3D172 /* main.m */; };
 		BDC218111BDFC6DC00A3D172 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218101BDFC6DC00A3D172 /* AppDelegate.m */; };
 		BDC218171BDFC6DC00A3D172 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC218151BDFC6DC00A3D172 /* Main.storyboard */; };
@@ -17,33 +25,33 @@
 		BDC2181C1BDFC6DC00A3D172 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC2181A1BDFC6DC00A3D172 /* LaunchScreen.storyboard */; };
 		BDC218271BDFC6DC00A3D172 /* VancomycinTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218261BDFC6DC00A3D172 /* VancomycinTests.m */; };
 		BDC218321BDFC6DC00A3D172 /* VancomycinUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218311BDFC6DC00A3D172 /* VancomycinUITests.m */; };
-		BDC218441BDFC78300A3D172 /* Weight.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218431BDFC78300A3D172 /* Weight.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218471BDFC79800A3D172 /* Height.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218461BDFC79800A3D172 /* Height.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2184A1BDFC7A500A3D172 /* Age.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218491BDFC7A500A3D172 /* Age.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2184D1BDFC7BE00A3D172 /* BasicInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2184C1BDFC7BE00A3D172 /* BasicInformation.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218521BDFC99700A3D172 /* Gender.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218511BDFC99700A3D172 /* Gender.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218551BDFC9B300A3D172 /* Amputations.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218541BDFC9B300A3D172 /* Amputations.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218581BDFC9CD00A3D172 /* TableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218571BDFC9CD00A3D172 /* TableItem.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2185E1BDFCF9800A3D172 /* RenalInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2185D1BDFCF9800A3D172 /* RenalInformation.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218611BDFCFAA00A3D172 /* SerumCreatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218601BDFCFAA00A3D172 /* SerumCreatinine.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218641BDFD06300A3D172 /* UrineCreatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218631BDFD06300A3D172 /* UrineCreatinine.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218671BDFD0E600A3D172 /* EliminationTableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218661BDFD0E600A3D172 /* EliminationTableItem.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2186A1BDFD12800A3D172 /* DialysisTableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218691BDFD12800A3D172 /* DialysisTableItem.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218701BDFD76100A3D172 /* CalculatedClearanceInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2186F1BDFD76100A3D172 /* CalculatedClearanceInformation.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218731BDFD7EA00A3D172 /* SingleSerumCreatinineInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218721BDFD7EA00A3D172 /* SingleSerumCreatinineInformation.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218761BDFD83000A3D172 /* DualSerumCreatinineInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218751BDFD83000A3D172 /* DualSerumCreatinineInformation.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218791BDFD8BC00A3D172 /* _24HourUrineCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218781BDFD8BC00A3D172 /* _24HourUrineCollection.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2187C1BDFD90200A3D172 /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2187B1BDFD90200A3D172 /* Volume.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2187F1BDFD90F00A3D172 /* Molecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2187E1BDFD90F00A3D172 /* Molecule.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218821BDFD98C00A3D172 /* Concentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218811BDFD98C00A3D172 /* Concentration.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218851BDFD9F400A3D172 /* BasicInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218841BDFD9F400A3D172 /* BasicInformationViewController.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218881BDFDA8900A3D172 /* RenalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218871BDFDA8900A3D172 /* RenalInformationViewController.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2188B1BDFDB0000A3D172 /* VancomycinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2188A1BDFDB0000A3D172 /* VancomycinViewController.m */; settings = {ASSET_TAGS = (); }; };
-		BDC2188E1BDFDB4F00A3D172 /* CalculatedClearanceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2188D1BDFDB4F00A3D172 /* CalculatedClearanceTableViewController.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218911BDFDC2700A3D172 /* CreatinineConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218901BDFDC2700A3D172 /* CreatinineConcentration.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218941BDFDC6C00A3D172 /* Creatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218931BDFDC6C00A3D172 /* Creatinine.m */; settings = {ASSET_TAGS = (); }; };
-		BDC218971BDFDCD300A3D172 /* _24HourUrineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218961BDFDCD300A3D172 /* _24HourUrineViewController.m */; settings = {ASSET_TAGS = (); }; };
-		BDFD2FA21BE69A62002F370D /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD2FA11BE69A62002F370D /* Time.m */; settings = {ASSET_TAGS = (); }; };
+		BDC218441BDFC78300A3D172 /* Weight.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218431BDFC78300A3D172 /* Weight.m */; };
+		BDC218471BDFC79800A3D172 /* Height.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218461BDFC79800A3D172 /* Height.m */; };
+		BDC2184A1BDFC7A500A3D172 /* Age.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218491BDFC7A500A3D172 /* Age.m */; };
+		BDC2184D1BDFC7BE00A3D172 /* BasicInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2184C1BDFC7BE00A3D172 /* BasicInformation.m */; };
+		BDC218521BDFC99700A3D172 /* Gender.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218511BDFC99700A3D172 /* Gender.m */; };
+		BDC218551BDFC9B300A3D172 /* Amputations.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218541BDFC9B300A3D172 /* Amputations.m */; };
+		BDC218581BDFC9CD00A3D172 /* TableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218571BDFC9CD00A3D172 /* TableItem.m */; };
+		BDC2185E1BDFCF9800A3D172 /* RenalInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2185D1BDFCF9800A3D172 /* RenalInformation.m */; };
+		BDC218611BDFCFAA00A3D172 /* SerumCreatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218601BDFCFAA00A3D172 /* SerumCreatinine.m */; };
+		BDC218641BDFD06300A3D172 /* UrineCreatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218631BDFD06300A3D172 /* UrineCreatinine.m */; };
+		BDC218671BDFD0E600A3D172 /* EliminationTableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218661BDFD0E600A3D172 /* EliminationTableItem.m */; };
+		BDC2186A1BDFD12800A3D172 /* DialysisTableItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218691BDFD12800A3D172 /* DialysisTableItem.m */; };
+		BDC218701BDFD76100A3D172 /* CalculatedClearanceInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2186F1BDFD76100A3D172 /* CalculatedClearanceInformation.m */; };
+		BDC218731BDFD7EA00A3D172 /* SingleSerumCreatinineInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218721BDFD7EA00A3D172 /* SingleSerumCreatinineInformation.m */; };
+		BDC218761BDFD83000A3D172 /* DualSerumCreatinineInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218751BDFD83000A3D172 /* DualSerumCreatinineInformation.m */; };
+		BDC218791BDFD8BC00A3D172 /* _24HourUrineCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218781BDFD8BC00A3D172 /* _24HourUrineCollection.m */; };
+		BDC2187C1BDFD90200A3D172 /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2187B1BDFD90200A3D172 /* Volume.m */; };
+		BDC2187F1BDFD90F00A3D172 /* Molecule.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2187E1BDFD90F00A3D172 /* Molecule.m */; };
+		BDC218821BDFD98C00A3D172 /* Concentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218811BDFD98C00A3D172 /* Concentration.m */; };
+		BDC218851BDFD9F400A3D172 /* BasicInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218841BDFD9F400A3D172 /* BasicInformationViewController.m */; };
+		BDC218881BDFDA8900A3D172 /* RenalInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218871BDFDA8900A3D172 /* RenalInformationViewController.m */; };
+		BDC2188B1BDFDB0000A3D172 /* VancomycinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2188A1BDFDB0000A3D172 /* VancomycinViewController.m */; };
+		BDC2188E1BDFDB4F00A3D172 /* CalculatedClearanceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2188D1BDFDB4F00A3D172 /* CalculatedClearanceTableViewController.m */; };
+		BDC218911BDFDC2700A3D172 /* CreatinineConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218901BDFDC2700A3D172 /* CreatinineConcentration.m */; };
+		BDC218941BDFDC6C00A3D172 /* Creatinine.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218931BDFDC6C00A3D172 /* Creatinine.m */; };
+		BDC218971BDFDCD300A3D172 /* _24HourUrineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC218961BDFDCD300A3D172 /* _24HourUrineViewController.m */; };
+		BDFD2FA21BE69A62002F370D /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD2FA11BE69A62002F370D /* Time.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,12 +72,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD000B951BEC48C300D04608 /* CreatinineClearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatinineClearance.h; sourceTree = "<group>"; };
+		BD000B961BEC48C300D04608 /* CreatinineClearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatinineClearance.m; sourceTree = "<group>"; };
 		BD0219ED1BEAA02A00EBB523 /* UrineVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrineVolume.h; sourceTree = "<group>"; };
 		BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrineVolume.m; sourceTree = "<group>"; };
+		BD2F8A951BFC1D56007FDCB1 /* DualSerumCreatinineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DualSerumCreatinineViewController.h; sourceTree = "<group>"; };
+		BD2F8A961BFC1D56007FDCB1 /* DualSerumCreatinineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DualSerumCreatinineViewController.m; sourceTree = "<group>"; };
+		BD3B0DA11C000A3200E28932 /* Albumin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Albumin.h; sourceTree = "<group>"; };
+		BD3B0DA21C000A3200E28932 /* Albumin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Albumin.m; sourceTree = "<group>"; };
+		BD3B0DA71C000FA600E28932 /* AlbuminConcentration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbuminConcentration.h; sourceTree = "<group>"; };
+		BD3B0DA81C000FA600E28932 /* AlbuminConcentration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbuminConcentration.m; sourceTree = "<group>"; };
 		BD5ADF6C1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VancomycinNavigationControllerViewController.h; sourceTree = "<group>"; };
 		BD5ADF6D1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VancomycinNavigationControllerViewController.m; sourceTree = "<group>"; };
 		BD5ADF6F1BE471CC0037E7D1 /* FlowRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowRate.h; sourceTree = "<group>"; };
 		BD5ADF701BE471CC0037E7D1 /* FlowRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowRate.m; sourceTree = "<group>"; };
+		BD62CA7A1BFF627000FD2DB5 /* BUNConcentration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUNConcentration.h; sourceTree = "<group>"; };
+		BD62CA7B1BFF627000FD2DB5 /* BUNConcentration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUNConcentration.m; sourceTree = "<group>"; };
+		BD8174831BFE707000B41B6B /* SingleValueSerumCreatinineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleValueSerumCreatinineViewController.h; sourceTree = "<group>"; };
+		BD8174841BFE707000B41B6B /* SingleValueSerumCreatinineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleValueSerumCreatinineViewController.m; sourceTree = "<group>"; };
+		BD8174861BFE716800B41B6B /* BUN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BUN.h; sourceTree = "<group>"; };
+		BD8174871BFE716800B41B6B /* BUN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BUN.m; sourceTree = "<group>"; };
+		BDBFA13D1BF42DAE00C1FDCD /* BaseValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseValue.h; sourceTree = "<group>"; };
+		BDBFA13E1BF42DAE00C1FDCD /* BaseValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseValue.m; sourceTree = "<group>"; };
 		BDC218091BDFC6DC00A3D172 /* Vancomycin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vancomycin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC2180D1BDFC6DC00A3D172 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BDC2180F1BDFC6DC00A3D172 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -211,6 +235,10 @@
 				BDC218961BDFDCD300A3D172 /* _24HourUrineViewController.m */,
 				BD5ADF6C1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.h */,
 				BD5ADF6D1BE45D240037E7D1 /* VancomycinNavigationControllerViewController.m */,
+				BD2F8A951BFC1D56007FDCB1 /* DualSerumCreatinineViewController.h */,
+				BD2F8A961BFC1D56007FDCB1 /* DualSerumCreatinineViewController.m */,
+				BD8174831BFE707000B41B6B /* SingleValueSerumCreatinineViewController.h */,
+				BD8174841BFE707000B41B6B /* SingleValueSerumCreatinineViewController.m */,
 			);
 			path = Vancomycin;
 			sourceTree = "<group>";
@@ -285,6 +313,16 @@
 				BDC218931BDFDC6C00A3D172 /* Creatinine.m */,
 				BD0219ED1BEAA02A00EBB523 /* UrineVolume.h */,
 				BD0219EE1BEAA02A00EBB523 /* UrineVolume.m */,
+				BD000B951BEC48C300D04608 /* CreatinineClearance.h */,
+				BD000B961BEC48C300D04608 /* CreatinineClearance.m */,
+				BD8174861BFE716800B41B6B /* BUN.h */,
+				BD8174871BFE716800B41B6B /* BUN.m */,
+				BD62CA7A1BFF627000FD2DB5 /* BUNConcentration.h */,
+				BD62CA7B1BFF627000FD2DB5 /* BUNConcentration.m */,
+				BD3B0DA11C000A3200E28932 /* Albumin.h */,
+				BD3B0DA21C000A3200E28932 /* Albumin.m */,
+				BD3B0DA71C000FA600E28932 /* AlbuminConcentration.h */,
+				BD3B0DA81C000FA600E28932 /* AlbuminConcentration.m */,
 			);
 			name = ClearanceGroup;
 			sourceTree = "<group>";
@@ -307,6 +345,8 @@
 				BD5ADF701BE471CC0037E7D1 /* FlowRate.m */,
 				BDFD2FA01BE69A62002F370D /* Time.h */,
 				BDFD2FA11BE69A62002F370D /* Time.m */,
+				BDBFA13D1BF42DAE00C1FDCD /* BaseValue.h */,
+				BDBFA13E1BF42DAE00C1FDCD /* BaseValue.m */,
 			);
 			name = GeneralTypes;
 			sourceTree = "<group>";
@@ -447,18 +487,26 @@
 				BD0219EF1BEAA02A00EBB523 /* UrineVolume.m in Sources */,
 				BDC218851BDFD9F400A3D172 /* BasicInformationViewController.m in Sources */,
 				BDC218521BDFC99700A3D172 /* Gender.m in Sources */,
+				BD000B971BEC48C300D04608 /* CreatinineClearance.m in Sources */,
 				BDC218111BDFC6DC00A3D172 /* AppDelegate.m in Sources */,
 				BDC218971BDFDCD300A3D172 /* _24HourUrineViewController.m in Sources */,
 				BDC2188B1BDFDB0000A3D172 /* VancomycinViewController.m in Sources */,
+				BDBFA13F1BF42DAE00C1FDCD /* BaseValue.m in Sources */,
 				BDC218911BDFDC2700A3D172 /* CreatinineConcentration.m in Sources */,
+				BD3B0DA31C000A3200E28932 /* Albumin.m in Sources */,
 				BDC218581BDFC9CD00A3D172 /* TableItem.m in Sources */,
+				BD62CA7C1BFF627000FD2DB5 /* BUNConcentration.m in Sources */,
+				BD8174851BFE707000B41B6B /* SingleValueSerumCreatinineViewController.m in Sources */,
 				BDC218821BDFD98C00A3D172 /* Concentration.m in Sources */,
 				BDC2186A1BDFD12800A3D172 /* DialysisTableItem.m in Sources */,
 				BDC218701BDFD76100A3D172 /* CalculatedClearanceInformation.m in Sources */,
 				BDC218551BDFC9B300A3D172 /* Amputations.m in Sources */,
 				BDC218761BDFD83000A3D172 /* DualSerumCreatinineInformation.m in Sources */,
+				BD8174881BFE716800B41B6B /* BUN.m in Sources */,
 				BDC218611BDFCFAA00A3D172 /* SerumCreatinine.m in Sources */,
 				BDC2180E1BDFC6DC00A3D172 /* main.m in Sources */,
+				BD3B0DA91C000FA600E28932 /* AlbuminConcentration.m in Sources */,
+				BD2F8A971BFC1D56007FDCB1 /* DualSerumCreatinineViewController.m in Sources */,
 				BDC218791BDFD8BC00A3D172 /* _24HourUrineCollection.m in Sources */,
 				BDC2185E1BDFCF9800A3D172 /* RenalInformation.m in Sources */,
 				BDC2184D1BDFC7BE00A3D172 /* BasicInformation.m in Sources */,

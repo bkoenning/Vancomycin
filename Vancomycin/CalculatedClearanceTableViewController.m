@@ -13,6 +13,7 @@
 #import "DualSerumCreatinineInformation.h"
 #import "TableItem.h"
 #import "_24HourUrineViewController.h"
+#import "DualSerumCreatinineViewController.h"
 
 @interface CalculatedClearanceTableViewController ()
 {
@@ -188,6 +189,9 @@
     // Pass the selected object to the new view controller.
     if ([[segue identifier]isEqualToString:@"to24HrInformation"]){
         [[segue destinationViewController]setDetailItem:[[self detailItem]twentyFourHourUrineScr]];
+    }
+    else if ([[segue identifier]isEqualToString:@"toDualSerumCreatinine"]){
+        [[segue destinationViewController]setDetailItem:[[self detailItem]dualScr]];
     }
     
 }

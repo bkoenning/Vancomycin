@@ -17,14 +17,29 @@
     BOOL lua_checked_first, rua_checked_first, lul_checked_first, rul_checked_first;
     NSMutableArray *enabledViews;
     UITapGestureRecognizer *recognizer;
+    UITapGestureRecognizer *recognizerLLA, *recognizerLUA, *recognizerLLL, *recognizerLUL,
+        *recognizerRUL, *recognizerRUA, *recognizerRLL, *recognizerRLA;
 }
 -(void)configureView;
+-(void)updateRUAFromLabel;
+-(void)updateRULFromLabel;
+-(void)updateRLAFromLabel;
+-(void)updateRLLFromLabel;
+-(void)updateLLLFromLabel;
+-(void)updateLLAFromLabel;
+-(void)updateLUAFromLabel;
+-(void)updateLULFromLabel;
 @end
 
 @implementation BasicInformationViewController
 
 @synthesize segGender,segHeightUnits,segWeightUnits,buttonLLArm,buttonLLLeg,buttonLUArm,
-buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFieldHeight,textFieldWeight,buttonValidate,detailItem;
+buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFieldHeight,textFieldWeight,buttonValidate,detailItem, labelLLArm, labelLLLeg, labelLUArm, labelLULeg, labelRLArm, labelRLLeg, labelRUArm, labelRULeg;
+
+-(BOOL)shouldAutorotate
+{
+    return  NO;
+}
 
 -(void)dealloc
 {
@@ -63,10 +78,33 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
     checkboxfull = @"checkbox_full";
     enabledViews = [NSMutableArray arrayWithObjects: segGender, segHeightUnits,segWeightUnits,
                     textFieldWeight, textFieldAge, textFieldHeight, buttonLLArm, buttonLLLeg,
-                    buttonLUArm, buttonLULeg, buttonRLArm, buttonRLLeg, buttonRUArm, buttonRULeg, nil ];
+                    buttonLUArm, buttonLULeg, buttonRLArm, buttonRLLeg, buttonRUArm, buttonRULeg,nil];
     
     [self configureView];
     recognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyboard)];
+    recognizerLLA = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateLLAFromLabel)];
+    [labelLLArm addGestureRecognizer:recognizerLLA];
+    
+    recognizerLUA = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateLUAFromLabel)];
+    [labelLUArm addGestureRecognizer:recognizerLUA];
+    
+    recognizerLLL = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateLLLFromLabel)];
+    [labelLLLeg addGestureRecognizer:recognizerLLL];
+    
+    recognizerLUL = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateLULFromLabel)];
+    [labelLULeg addGestureRecognizer:recognizerLUL];
+    
+    recognizerRLA = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateRLAFromLabel)];
+    [labelRLArm addGestureRecognizer:recognizerRLA];
+    
+    recognizerRLL = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateRLLFromLabel)];
+    [labelRLLeg addGestureRecognizer:recognizerRLL];
+    
+    recognizerRUA = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateRUAFromLabel)];
+    [labelRUArm addGestureRecognizer:recognizerRUA];
+    
+    recognizerRUL = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(updateRULFromLabel)];
+    [labelRULeg addGestureRecognizer:recognizerRUL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -167,6 +205,33 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         }
     }
 }
+-(void)updateLUAFromLabel
+{
+    if (!lua && [buttonLUArm isEnabled]){
+        [buttonLUArm setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonLLArm setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonLLArm setEnabled:NO];
+        
+        if (!lla){
+            lua_checked_first = YES;
+            lla = YES;
+        }
+        else
+            lua_checked_first = NO;
+        lua = YES;
+    }
+    else if (lua && [buttonLUArm isEnabled]){
+        [buttonLUArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        [buttonLLArm setEnabled:YES];
+        lua = NO;
+        if (lua_checked_first){
+            [buttonLLArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+            lla = NO;
+            lua_checked_first = NO;
+        }
+    }
+}
+
 -(IBAction)updateRUA:(id)sender
 {
     if (!rua){
@@ -192,6 +257,32 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         }
     }
 }
+-(void)updateRUAFromLabel
+{
+    if (!rua && [buttonRUArm isEnabled]){
+        [buttonRUArm setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonRLArm setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonRLArm setEnabled:NO];
+        if (!rla){
+            rua_checked_first = YES;
+            rla = YES;
+        }
+        else
+            rua_checked_first = NO;
+        rua = YES;
+    }
+    else if (rua && [buttonRUArm isEnabled]){
+        [buttonRUArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        [buttonRLArm setEnabled:YES];
+        rua = NO;
+        if (rua_checked_first){
+            [buttonRLArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+            rla = NO;
+            rua_checked_first = NO;
+        }
+    }
+}
+
 -(IBAction)updateRUL:(id)sender
 {
     if (!rul){
@@ -217,6 +308,33 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         }
     }
 }
+
+-(void)updateRULFromLabel
+{
+    if (!rul && [buttonRULeg isEnabled]){
+        [buttonRULeg setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonRLLeg setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonRLLeg setEnabled:NO];
+        if (!rll){
+            rul_checked_first = YES;
+            rll = YES;
+        }
+        else
+            rul_checked_first = NO;
+        rul = YES;
+    }
+    else if (rul && [buttonRULeg isEnabled]){
+        [buttonRULeg setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        [buttonRLLeg setEnabled:YES];
+        rul = NO;
+        if (rul_checked_first){
+            [buttonRLLeg setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+            rll = NO;
+            rul_checked_first = NO;
+        }
+    }
+}
+
 -(IBAction)updateLUL:(id)sender
 {
     if (!lul){
@@ -243,6 +361,33 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         }
     }
 }
+-(void)updateLULFromLabel
+{
+    if (!lul && [buttonLULeg isEnabled]){
+        [buttonLULeg setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonLLLeg setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        [buttonLLLeg setEnabled:NO];
+        if (!lll){
+            lul_checked_first = YES;
+            lll = YES;
+        }
+        else
+            lul_checked_first = NO;
+        lul = YES;
+        
+    }
+    else if (lul && [buttonLULeg isEnabled]){
+        [buttonLULeg setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        [buttonLLLeg setEnabled: YES];
+        lul = NO;
+        if (lul_checked_first){
+            [buttonLLLeg setImage: [UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+            lll = NO;
+            lul_checked_first = NO;
+        }
+    }
+}
+
 -(IBAction)updateLLL:(id)sender
 {
     if (!lll){
@@ -254,6 +399,18 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         lll = NO;
     }
 }
+-(void)updateLLLFromLabel
+{
+    if (!lll && [buttonLLLeg isEnabled]){
+        [buttonLLLeg setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        lll = YES;
+    }
+    else if (lll && [buttonLLLeg isEnabled]){
+        [buttonLLLeg setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        lll = NO;
+    }
+}
+
 -(IBAction)updateRLL:(id)sender
 {
     if (!rll){
@@ -261,6 +418,17 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         rll = YES;
     }
     else if (rll){
+        [buttonRLLeg setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        rll = NO;
+    }
+}
+-(void)updateRLLFromLabel
+{
+    if (!rll && [buttonRLLeg isEnabled]){
+        [buttonRLLeg setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        rll = YES;
+    }
+    else if (rll && [buttonRLLeg isEnabled]){
         [buttonRLLeg setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
         rll = NO;
     }
@@ -276,6 +444,18 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         lla = NO;
     }
 }
+-(void)updateLLAFromLabel
+{
+    if (!lla && [buttonLLArm isEnabled]){
+        [buttonLLArm setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        lla = YES;
+    }
+    else if (lla && [buttonLLArm isEnabled]){
+        [buttonLLArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        lla = NO;
+    }
+    
+}
 -(IBAction)updateRLA:(id)sender
 {
     if (!rla){
@@ -283,6 +463,17 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         rla = YES;
     }
     else if (rla){
+        [buttonRLArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
+        rla = NO;
+    }
+}
+-(void)updateRLAFromLabel
+{
+    if (!rla && [buttonRLArm isEnabled]){
+        [buttonRLArm setImage:[UIImage imageNamed:checkboxfull] forState:UIControlStateNormal];
+        rla = YES;
+    }
+    else if (rla && [buttonRLArm isEnabled]){
         [buttonRLArm setImage:[UIImage imageNamed:checkboxempty] forState:UIControlStateNormal];
         rla = NO;
     }
@@ -465,6 +656,7 @@ buttonLULeg,buttonRLArm,buttonRLLeg,buttonRUArm,buttonRULeg,textFieldAge,textFie
         else [[[[self detailItem]amputations]checkOrder]setValue:[NSNumber numberWithBool:NO] forKey:@"right_upper_leg_checked_first"];
          */
         
+    
         
         
         [[self buttonValidate]setTitle:@"Unlock Information" forState:UIControlStateNormal];

@@ -12,6 +12,7 @@
 #import "UrineVolume.h"
 #import "Creatinine.h"
 #import "CreatinineConcentration.h"
+#import "CreatinineClearance.h"
 
 @interface _24HourUrineCollection : TableItem
 
@@ -21,6 +22,7 @@
 @property (nonatomic) UrineVolume *urineVolume;
 
 -(Creatinine*)creatinineExcreted;
+-(CreatinineClearance*)creatinineClearance;
 
 
 

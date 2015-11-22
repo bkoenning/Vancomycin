@@ -18,7 +18,7 @@
 }
 +(Creatinine*)minDailyExcretion
 {
-    return [[Creatinine alloc]initWithMassFloat:525 massUnit:MILLIGRAM];
+    return [[Creatinine alloc]initWithMassFloat:375 massUnit:MILLIGRAM];
 }
 
 -(Creatinine*)creatinineExcreted:(Volume *)v
