@@ -38,5 +38,4 @@
     return [[Creatinine alloc]initWithMolarFloat:[[m molarAmount]floatValue] molarUnit:mu];
 }
 
-
 @end

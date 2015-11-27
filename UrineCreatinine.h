@@ -21,6 +21,9 @@
 @interface UrineCreatinine :  CreatinineConcentration
 
 
++(BOOL)regexForUrineCreatinineConcentrationInMgDL: (NSString*)ucr;
++(BOOL)regexForUrineCreatinineConcentrationInMicromolL:(NSString *)ucr;
+
 
 +(Creatinine*)maxDailyExcretion;
 +(Creatinine*)minDailyExcretion;

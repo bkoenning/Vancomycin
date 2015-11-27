@@ -32,6 +32,7 @@ typedef enum
 @property (nonatomic) MolarUnit molarunit;
 @property (nonatomic) float molecularWeight;
 @property (nonatomic) BOOL returnAsMolar;
+@property (nonatomic) int fractionDigits;
 
 
 -(instancetype)initWithMolarFloat: (float)amt molarUnit:(MolarUnit)un molecularWeight:(float)mw;
@@ -43,7 +44,7 @@ typedef enum
 -(instancetype)copyWithZone:(NSZone *)zone;
 -(int)compareTo:(Molecule*)m;
 -(BOOL)isInRangeLower: (Molecule*)lower upper:(Molecule*)upper;
-
+-(void)setMaxFractionDigits:(int)num;
 
 
 @end

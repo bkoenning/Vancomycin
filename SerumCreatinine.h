@@ -13,11 +13,17 @@
 @interface SerumCreatinine : CreatinineConcentration
 
 
-+(SerumCreatinine*)maxConcentration;
-+(SerumCreatinine*)minConcentration;
++(SerumCreatinine*)maxConcentrationMass;
++(SerumCreatinine*)minConcentrationMass;
++(SerumCreatinine*)minConcentrationMolar;
++(SerumCreatinine*)maxConcentrationMolar;
 
 -(SerumCreatinine*)convertedToMolarUnit: (MolarUnit)mu andVolumeUnit: (VolumeUnit)vu;
 -(SerumCreatinine*)convertedToMassUnit: (MassUnit)mu andVolumeUnit: (VolumeUnit)vu;
++(BOOL)regexCheckInMilligramsPerDeciliter: (NSString*)serumCreatinineString;
++(BOOL)regexCheckInMicromolesPerLiter:(NSString *)serumCreatinineString;
+
+
 
 
 

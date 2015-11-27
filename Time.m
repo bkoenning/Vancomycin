@@ -13,6 +13,13 @@
 @synthesize time, timeUnit;
 
 
++(BOOL)regexForTimeBetweenSerumCreatinineLevelsInHours:(NSString *)text
+{
+    NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1,2})(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSTextCheckingResult *timeMatch = [reg firstMatchInString: text options:0 range:NSMakeRange(0, [text length])];
+    return timeMatch;
+}
+
 -(NSString*)valueAsString
 {
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];

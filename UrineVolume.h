@@ -16,4 +16,7 @@
 
 -(UrineVolume*)converted: (VolumeUnit)vu;
 
++(BOOL)regexForDailyUrineVolumeInML: (NSString*)v;
++(BOOL)regexForDailyUrineVolumeInL:(NSString *)v;
+
 @end

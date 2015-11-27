@@ -12,6 +12,27 @@
 
 
 
++(BOOL)regexForUrineCreatinineConcentrationInMgDL:(NSString *)ucr
+{
+    NSRegularExpression *wholeNumberWithOptionalDecimalPoint = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1,3}\\.?)$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSTextCheckingResult *wholeNumberWithOptionalDecimalPointMatch = [wholeNumberWithOptionalDecimalPoint firstMatchInString:ucr options:0 range:NSMakeRange(0, [ucr length])];
+    
+    NSRegularExpression *wholeNumberWithOptionalDecimalPortion = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{1,3})(\\.\\d{1,2})?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSTextCheckingResult *wholeNumberWithOptionalDecimalPortionMatch = [wholeNumberWithOptionalDecimalPortion firstMatchInString:ucr options:0 range:NSMakeRange(0, [ucr length])];
+    
+    
+    return wholeNumberWithOptionalDecimalPortionMatch || wholeNumberWithOptionalDecimalPointMatch;
+    
+}
+
++(BOOL)regexForUrineCreatinineConcentrationInMicromolL:(NSString *)ucr
+{
+    NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^\\d{3,5}$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSTextCheckingResult *regMatch = [reg firstMatchInString:ucr options:0 range:NSMakeRange(0, [ucr length])];
+    
+    return  regMatch;
+}
+
 +(Creatinine*)maxDailyExcretion
 {
     return [[Creatinine alloc]initWithMassFloat:3750 massUnit:MILLIGRAM];

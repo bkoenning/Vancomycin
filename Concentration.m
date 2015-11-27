@@ -26,16 +26,17 @@
     Concentration *convertedSelf = [self convertedToMassUnit:[[c mol]massunit] andVolumeUnit:[[c vol]unit]];
     Concentration *reducedC = [c reduced];
     
-    float dif = fabsf([[[convertedSelf mol]massAmount]floatValue] - [[[reducedC mol]massAmount]floatValue]);
+    //float dif = fabsf([[[convertedSelf mol]massAmount]floatValue] - [[[reducedC mol]massAmount]floatValue]);
+    float ratio = [[[convertedSelf mol]massAmount]floatValue] / [[[reducedC mol]massAmount]floatValue];
     
-    if (dif < 0.0000000001)
+    float percent = fabsf(1.0f - ratio) * 100.0f;
+    
+    if (percent < 0.0005f)
         return 0;
     else if ([[[convertedSelf mol]massAmount]floatValue] > [[[reducedC mol]massAmount]floatValue])
         return 1;
     else
         return -1;
-    
-    
 }
 
 -(BOOL)isInRangeLower:(Concentration *)lower upper:(Concentration *)upper

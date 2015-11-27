@@ -9,15 +9,17 @@
 
 @implementation Molecule
 
-@synthesize molarAmount, massAmount, massunit, molarunit, molecularWeight, returnAsMolar;
+@synthesize molarAmount, massAmount, massunit, molarunit, molecularWeight, returnAsMolar, fractionDigits;
 
 
 -(int)compareTo:(Molecule *)m
 {
     Molecule *mcopy = [self convertedToMassUnit:[m massunit]];
-    float diff = fabsf([[mcopy massAmount]floatValue] - [[m massAmount]floatValue]);
+    //float diff = fabsf([[mcopy massAmount]floatValue] - [[m massAmount]floatValue]);
+    float ratio = [[mcopy massAmount]floatValue] / [[m massAmount]floatValue];
+    float percent = fabsf(ratio - 1.0f) * 100.0f;
     
-    if (diff < 0.00000001)
+    if (percent < 0.05f)
         return 0;
     else if ([[mcopy massAmount]floatValue] > [[m massAmount]floatValue])
         return  1;
@@ -50,6 +52,7 @@
         [result setMassunit:(MassUnit)mu];
         [result setReturnAsMolar:YES];
         [result setMolecularWeight:[self molecularWeight]];
+        [result setFractionDigits:[self fractionDigits]];
     }
     else if ([self molarunit] < mu){
         int factor = (int) mu / (int)[self molarunit];
@@ -59,6 +62,7 @@
         [result setMassunit:(MassUnit)mu];
         [result setReturnAsMolar:YES];
         [result setMolecularWeight:[self molecularWeight]];
+        [result setFractionDigits:[self fractionDigits]];
     }
     else
         result = [self copy];
@@ -79,6 +83,7 @@
         [result setMolarunit:(MolarUnit)mu];
         [result setReturnAsMolar:NO];
         [result setMolecularWeight:[self molecularWeight]];
+        [result setFractionDigits:[self fractionDigits]];
     }
     else if ([self massunit] < mu){
         int factor = (int)mu / (int)[self massunit];
@@ -88,6 +93,7 @@
         [result setMolarunit:(MolarUnit)mu];
         [result setReturnAsMolar:NO];
         [result setMolecularWeight:[self molecularWeight]];
+        [result setFractionDigits:[self fractionDigits]];
     }
     else
         result = [self copy];
@@ -107,6 +113,7 @@
     [mcopy setMassunit:massunit];
     [mcopy setReturnAsMolar:[self returnAsMolar]];
     [mcopy setMolecularWeight:[self molecularWeight]];
+    [mcopy setFractionDigits:[self fractionDigits]];
     return mcopy;
 }
 
@@ -119,6 +126,7 @@
     [self setMassAmount:[NSNumber numberWithFloat:amt * [self molecularWeight]]];
     [self setMassunit:(MassUnit)un];
     [self setReturnAsMolar:YES];
+    [self setFractionDigits:4];
     return  self;
 }
 
@@ -131,6 +139,7 @@
     [self setMolarAmount:[NSNumber numberWithFloat:amt / [self molecularWeight]]];
     [self setMolarunit:(MolarUnit)un];
     [self setReturnAsMolar:NO];
+    [self setFractionDigits:4];
     return  self;
 }
 
@@ -138,6 +147,7 @@
 -(instancetype)init
 {
     self = [self initWithMassFloat:0 massUnit:MILLIGRAM molecularWeight:1];
+    [self setFractionDigits:4];
     return  self;
 }
 
@@ -158,7 +168,7 @@
 -(NSString*)valueAsString
 {
     NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
-    [format setMaximumFractionDigits:4];
+    [format setMaximumFractionDigits:fractionDigits];
     [format setMinimumIntegerDigits:1];
     if ([self returnAsMolar]){
         return [NSString stringWithFormat:@"%@", [format stringFromNumber:[self molarAmount]]];
@@ -196,6 +206,11 @@
     }
     else
         return  [[self massAmount]floatValue];
+}
+
+-(void)setMaxFractionDigits:(int)num
+{
+    [self setFractionDigits:num];
 }
 
 @end

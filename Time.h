@@ -28,5 +28,5 @@ typedef enum
 -(instancetype)copyWithZone:(NSZone *)zone;
 -(int)compareTo: (Time*)t;
 -(BOOL)isInRangeLower: (Time*)lower upper:(Time*)upper;
-
++(BOOL)regexForTimeBetweenSerumCreatinineLevelsInHours: (NSString*)text;
 @end
