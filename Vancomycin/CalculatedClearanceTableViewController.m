@@ -14,10 +14,12 @@
 #import "TableItem.h"
 #import "_24HourUrineViewController.h"
 #import "DualSerumCreatinineViewController.h"
+#import "CustomVancomycinCell.h"
 
 @interface CalculatedClearanceTableViewController ()
 {
     NSMutableArray *objects;
+    NSMutableArray *colors;
 }
 
 
@@ -27,7 +29,6 @@
 @implementation CalculatedClearanceTableViewController
 
 @synthesize detailItem;
-
 
 -(void)setDetailItem: (CalculatedClearanceInformation*) newDetailItem
 {
@@ -47,7 +48,7 @@
     [super awakeFromNib];
     
 }
-
+/*
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat cellHeight = 50;
@@ -63,13 +64,15 @@
         return height + buffer;
     }
 }
-
+*/
 - (void)viewDidLoad {
     [super viewDidLoad];
     objects = [[NSMutableArray alloc]init];
     [objects addObject:[detailItem twentyFourHourUrineScr]];
     [objects addObject:[detailItem singleScr]];
     [objects addObject:[detailItem dualScr]];
+    [[self tableView]setEstimatedRowHeight:44.0];
+    [[self tableView]setRowHeight:UITableViewAutomaticDimension];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -94,10 +97,14 @@
     //#warning Incomplete implementation, return the number of rows
     return [objects count];
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    [[self tableView]reloadData];
+}
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell;
+    CustomVancomycinCell *cell;
     
     
     
@@ -111,17 +118,22 @@
         // if ([ti isSet]){
         //   [[cell detailTextLabel]setText:[[[self detailItem]twentyFourHourUrineScr]tableDescription]];
         //}
+        
     }
     else if ([ti isKindOfClass:[DualSerumCreatinineInformation class]]){
         cell = [tableView dequeueReusableCellWithIdentifier:@"twoValueScr" forIndexPath:indexPath];
     }
     else if ([ti isKindOfClass:[SingleSerumCreatinineInformation class]]){
         cell = [tableView dequeueReusableCellWithIdentifier:@"singleValueScr" forIndexPath:indexPath];
+       // [[cell titleLabel]setText:@"Single Value Serum Creatinine"];
+       // [[cell detailLabel]setText:@"mish mash"];
     }
     
-    [[cell detailTextLabel]setNumberOfLines:0];
-    [[cell detailTextLabel]setFont:[UIFont fontWithName:@"Helvetica" size:12.0f]];
-    [[cell detailTextLabel] setLineBreakMode:NSLineBreakByWordWrapping];
+    //[[cell detailTextLabel]setNumberOfLines:0];
+    
+    //[[cell detailLabel]setFont:[UIFont fontWithName:@"Helvetica" size:12.0f]];
+    //[[cell detailTextLabel] setLineBreakMode:NSLineBreakByWordWrapping];
+   // [[cell titleLabel]setText:@"Singlve Value Serum Creatinine"];
     
     if ([ti isSet]){
         NSAttributedString *text = [[NSAttributedString alloc]initWithString:[ti tableDescription]];
@@ -135,8 +147,9 @@
     
     NSMutableAttributedString *atr = [[NSMutableAttributedString alloc]initWithString:[ti tableHeader]];
     [atr addAttributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)} range:NSMakeRange(0, [atr length])];
-    [[cell textLabel]setFont:[UIFont boldSystemFontOfSize:20.0]];
-    [[cell textLabel]setAttributedText:atr];
+    [[cell titleLabel]setFont:[UIFont boldSystemFontOfSize:20.0]];
+    [[cell titleLabel]setAttributedText:atr];
+    [[cell detailLabel]setText:@""];
     
     
     

@@ -52,11 +52,6 @@
     NSRegularExpression *wholeNumberWithTwoDecimalPlaces = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{2,3}\\.\\d{1,2})$" options:NSRegularExpressionCaseInsensitive error:nil];
     NSTextCheckingResult *wholeNumberWithTwoDecimalPlacesMatch = [wholeNumberWithTwoDecimalPlaces firstMatchInString:serumCreatinineString options:0 range:NSMakeRange(0, [serumCreatinineString length])];
     
-   // NSRegularExpression *reg = [NSRegularExpression regularExpressionWithPattern:@"^(\\d{2,3})(\\.\\d{1,2}?)?$" options:NSRegularExpressionCaseInsensitive error:nil];
-   // NSTextCheckingResult *serumCreatinineMatch = [reg firstMatchInString:serumCreatinineString options:0 range:NSMakeRange(0, [serumCreatinineString length])];
-    
-    
-    //return serumCreatinineMatch;
     return wholeNumberWithOptionalDecimalPointMatch || wholeNumberWithTwoDecimalPlacesMatch;
 }
 

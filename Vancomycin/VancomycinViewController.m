@@ -15,12 +15,15 @@
 //#import "CalculatedClearanceTableItem.h"
 #import "DialysisTableItem.h"
 #import "CalculatedClearanceTableViewController.h"
+#import "CustomVancomycinCell.h"
 
 @interface VancomycinViewController ()
 {
     NSMutableArray *objects;
     BasicInformation *basicInformation;
     RenalInformation *renalInformation;
+    NSArray *colors;
+    UIColor *color1, *color2;
 }
 -(void)tableItemDidChangeNotification:(NSNotification*)notification;
 
@@ -40,8 +43,12 @@
 {
     basicInformation = [[BasicInformation alloc]init];
     renalInformation = [[RenalInformation alloc] init];
-    //NSLog(@"%@", [[renalInformation dialysisItem]tableDescription]);
+    color1 = [UIColor colorWithRed:255.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
+    color2 = [UIColor colorWithRed:255.0f/255.0f green:217.0f/255.0f blue:217.0f/255.0f alpha:1.0f];
+    colors = @[color1, color2];
+
     objects = [@[basicInformation, renalInformation] mutableCopy];
+    
     
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(tableItemDidChangeNotification:)
@@ -62,14 +69,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[self tableView]setEstimatedRowHeight:66.0];
+    [[self tableView]setRowHeight:UITableViewAutomaticDimension];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [[self tableView]reloadData];
+}
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+/*-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat cellHeight = 50;
     TableItem *i = objects[indexPath.row];
@@ -84,33 +98,35 @@
         return height + buffer;
     }
 }
+ */
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+    CustomVancomycinCell *cell;
     TableItem *thing = objects[indexPath.row];
     if ([thing isKindOfClass:[BasicInformation class]]){
-        cell = [tableView dequeueReusableCellWithIdentifier:@"basicInformationCell" forIndexPath:indexPath];
+        cell = [[self tableView]dequeueReusableCellWithIdentifier:@"basicInformationCell" forIndexPath:indexPath];
     }
     else if ([thing isKindOfClass:[RenalInformation class]]){
-        cell = [tableView dequeueReusableCellWithIdentifier:@"renalInformationCell" forIndexPath:indexPath];
+        cell = [[self tableView]dequeueReusableCellWithIdentifier:@"renalInformationCell" forIndexPath:indexPath];
     }
-    [[cell detailTextLabel]setNumberOfLines:0];
-    [[cell detailTextLabel]setFont:[UIFont fontWithName:@"Helvetica" size:12.0f]];
-    [[cell detailTextLabel] setLineBreakMode:NSLineBreakByWordWrapping];
     NSMutableAttributedString *atr = [[NSMutableAttributedString alloc]initWithString:[thing tableHeader]];
     [atr addAttributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)} range:NSMakeRange(0, [atr length])];
-    [[cell textLabel]setFont:[UIFont boldSystemFontOfSize:20.0]];
-    [[cell textLabel]setAttributedText:atr];
+    [[cell titleLabel]setAttributedText:atr];
     
     if ([thing isSet]){
         NSAttributedString *text = [[NSAttributedString alloc]initWithString:[thing tableDescription]];
-        [[cell detailTextLabel]setAttributedText:text];
+        [[cell detailLabel]setAttributedText:text];
     }
     else{
         [[cell detailTextLabel]setText:@""];
     }
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setBackgroundColor:[colors objectAtIndex:indexPath.row]];
 }
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {

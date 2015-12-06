@@ -14,5 +14,6 @@
 
 @property (nonatomic) CalculatedClearanceInformation *detailItem;
 
+
 @end
 

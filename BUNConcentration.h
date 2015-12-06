@@ -15,6 +15,14 @@
 
 -(instancetype)initWithMolecularAmount:(BUN*)m andVolume:(Volume *)vol;
 
++(BUNConcentration*)maxConcentrationInMgDL;
++(BUNConcentration*)minConcentrationInMgDL;
++(BUNConcentration*)minConcentrationInMMOLL;
++(BUNConcentration*)maxConcentrationInMMOLL;
+
++(BOOL)regexCheckInMilligramsPerDeciliter: (NSString*)bunString;
++(BOOL)regexCheckInMicromolesPerLiter:(NSString *)bunString;
+
 
 
 
